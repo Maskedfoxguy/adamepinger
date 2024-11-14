@@ -18,7 +18,19 @@ require("./config")(app);
 const indexRoutes = require("./routes/index.routes");
 app.use("/api", indexRoutes);
 
+
+// // for the admin to be able to CRUD
+// const authRoutes = require("./routes/auth.routes");
+// app.use("/auth", authRoutes);
+
+// const projectRoutes = require("./routes/project");
+// app.use("/projects", projectRoutes);
+
+// const contactRoutes = require("./routes/contact"); 
+// app.use("/contact", contactRoutes);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
+
 
 module.exports = app;
