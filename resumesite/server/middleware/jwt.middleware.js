@@ -1,6 +1,6 @@
-const { express: jwt } = require("express-jwt");
+const { expressjwt } = require("express-jwt");
 
-const isAuthenticated = jwt({
+const isAuthenticated = expressjwt({
     secret: process.env.TOKEN_SECRET,
     algorithms: ["HS256"],
     requestProperty: 'payload',
@@ -19,4 +19,4 @@ function getTokenFromHeaders (req) {
 
 module.exports = {
     isAuthenticated
-}
+};

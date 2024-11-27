@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 
 const adminSchema = new Schema(
@@ -41,7 +41,7 @@ if (this.isModified('password')) {
 next();  
 });
 
-module.exports = mongoose.model('Admin', adminSchema);
+module.exports = model('Admin', adminSchema);
 
 
 

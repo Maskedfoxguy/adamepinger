@@ -19,9 +19,9 @@ const indexRoutes = require("./routes/index.routes");
 app.use("/api", indexRoutes);
 
 
-// // for the admin to be able to CRUD
-// const authRoutes = require("./routes/auth.routes");
-// app.use("/auth", authRoutes);
+// for the admin to be able to CRUD
+const authRoutes = require("./routes/auth.routes");
+app.use("/auth", authRoutes);
 
 // const projectRoutes = require("./routes/project");
 // app.use("/projects", projectRoutes);
