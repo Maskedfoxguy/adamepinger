@@ -24,7 +24,7 @@ const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
 // const projectRoutes = require("./routes/project");
-// app.use("/projects", projectRoutes);
+// app.use("/projects", isAuthenticated , projectRoutes);
 
 // const contactRoutes = require("./routes/contact"); 
 // app.use("/contact", contactRoutes);
