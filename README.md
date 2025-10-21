@@ -6,7 +6,7 @@ A personal resume website showcasing my professional journey, portfolio, and pro
 
 **Live Demo:** [Not available yet]
 
-![Website Screenshot](<path to your screenshot image>)
+![Website Screenshot](/assets/screenshot.png)
 
 ## 🚀 Technologies Used
 
@@ -57,5 +57,4 @@ I'm open to connecting and collaborating. Feel free to reach out!
 *   **LinkedIn:** www.linkedin.com/in/adamepinger
 *   **Email:** adam.epinger@outlook.com
 
----
-*This README was created with the help of GitHub Copilot.*
+
