@@ -1,6 +1,6 @@
 # adamepinger
 A personal resume website showcasing my professional journey, portfolio, and projects (both completed and in progress). Features include a dynamic gallery, project updates, and an overview of my skills and experiences.
-# Adam's Personal Resume Website
+# My Personal Resume Website
 
 A personal resume website showcasing my professional journey, portfolio, and projects (both completed and in progress). This project is a core part of my journey in learning web development.
 
