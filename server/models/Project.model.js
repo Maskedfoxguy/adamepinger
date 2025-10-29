@@ -1,3 +1,4 @@
+// Describes portfolio projects including status, timelines, and related resources.
 const { Schema, model } = require("mongoose");
 
 const projectSchema = new Schema(
@@ -27,9 +28,9 @@ const projectSchema = new Schema(
     },
     endDate: {
       type: Date,
-      required: function () {
+      required: function requireEndDate() {
         return this.status === "completed";
-      }, 
+      },
     },
     projectUrl: {
       type: String,
@@ -41,13 +42,11 @@ const projectSchema = new Schema(
     },
     media: [
       {
-        type: String, 
+        type: String,
       },
     ],
   },
   { timestamps: true }
 );
 
-const Project = model("Project", projectSchema);
-
-module.exports = Project;
+module.exports = model("Project", projectSchema);
