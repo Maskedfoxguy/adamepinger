@@ -1,16 +1,16 @@
+// Defines the admin schema and hashes admin passwords before saving.
 const { Schema, model } = require("mongoose");
-const bcrypt = require('bcryptjs');
-
+const bcrypt = require("bcryptjs");
 
 const adminSchema = new Schema(
   {
     firstName: {
-      type: String, 
-      required: [true, 'First name is required'],
+      type: String,
+      required: [true, "First name is required"],
     },
     lastName: {
-      type: String, 
-      required: [true, 'Last name is required'],
+      type: String,
+      required: [true, "Last name is required"],
     },
     email: {
       type: String,
@@ -23,28 +23,23 @@ const adminSchema = new Schema(
     password: {
       type: String,
       required: [true, "Password is required."],
-      minlength: [8, "Password must be at least 8 characters long."]
+      minlength: [8, "Password must be at least 8 characters long."],
     },
     role: {
       type: String,
-      enum: ['admin'],
+      enum: ["admin"],
       default: "admin",
     },
   },
   { timestamps: true }
 );
 
-adminSchema.pre('save', async function (next) {
-if (this.isModified('password')) {
-  this.password = await bcrypt.hash(this.password, 10);
-}
-next();  
+adminSchema.pre("save", async function hashPassword(next) {
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+
+  next();
 });
 
-module.exports = model('Admin', adminSchema);
-
-
-
-// this is the longer version of the export
-// const User = model("Admin", adminSchema);
-// module.exports = Admin;
+module.exports = model("Admin", adminSchema);
