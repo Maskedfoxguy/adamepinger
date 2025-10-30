@@ -18,21 +18,27 @@ require("./config")(app);
 const indexRoutes = require("./routes/index.routes");
 app.use("/api", indexRoutes);
 
+// Public API endpoints expose read-only portfolio data.
+const projectRoutes = require("./routes/project.routes");
+app.use("/api/portfolio", projectRoutes);
 
-// for the admin to be able to CRUD
+const skillsRoutes = require("./routes/skills.routes");
+app.use("/api/skills", skillsRoutes);
+
+const aboutRoutes = require("./routes/about.routes");
+app.use("/api/about", aboutRoutes);
+
+const contactRoutes = require("./routes/contact.routes");
+app.use("/api/contact", contactRoutes);
+
+// Authentication endpoints are separated so the login route stays hidden from public docs.
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
+// Guard all admin routes with JWT authentication before enforcing admin role checks.
 const { isAuthenticated } = require("./middleware/jwt.middleware");
 const adminRoutes = require("./routes/admin.routes");
-app.use("/api/admin", isAuthenticated, adminRoutes );
-
-
-// const projectRoutes = require("./routes/project");
-// app.use("/projects", isAuthenticated , projectRoutes);
-
-// const contactRoutes = require("./routes/contact"); 
-// app.use("/contact", contactRoutes);
+app.use("/api/admin", isAuthenticated, adminRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);

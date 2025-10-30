@@ -21,10 +21,6 @@ function resolveTokenSecret() {
   }
 
   if (!tokenSecret) {
-    console.warn(
-      "[jwt.middleware] TOKEN_SECRET not set. Using a default development secret."
-    );
-
     cachedSecret = DEVELOPMENT_SECRET;
     return cachedSecret;
   }
