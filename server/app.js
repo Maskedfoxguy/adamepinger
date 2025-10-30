@@ -23,6 +23,11 @@ app.use("/api", indexRoutes);
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
+const { isAuthenticated } = require("./middleware/jwt.middleware");
+const adminRoutes = require("./routes/admin.routes");
+app.use("/api/admin", isAuthenticated, adminRoutes );
+
+
 // const projectRoutes = require("./routes/project");
 // app.use("/projects", isAuthenticated , projectRoutes);
 
