@@ -11,8 +11,8 @@ A personal resume website showcasing my professional journey, portfolio, and pro
 ## 🚀 Technologies Used
 
 *   **Frontend:** HTML, CSS, JavaScript, React
-*   **Backend:** (e.g., Node.js, Express - if you add one later)
-*   **Deployment:** (e.g., GitHub Pages, Netlify, Vercel)
+*   **Backend:** (e.g., Node.js, Express 
+*   **Deployment:** (e.g., GitHub Pages, Netlify)
 
 ## ✨ Key Features
 
