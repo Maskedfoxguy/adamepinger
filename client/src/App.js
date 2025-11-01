@@ -1,25 +1,30 @@
+// Sets up routing and layout for the portfolio app.
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import ProjectsPage from './pages/ProjectsPage';
+import ContactsPage from './pages/ContactsPage';
+import AdminLoginPage from './pages/AdminLoginPage';
 import './App.css';
-import Navbar from "./components/Navbar/Navbar";
-
-import HomePage from "./pages/HomePage/HomePage";
-import AboutPage from "./pages/AboutPage/AboutPage";
-import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
-
-import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <Navbar />
-      
-      <Routes>
-        <Route  path="/" element={<HomePage />} />
-
-        <Route path="/about" element={<AboutPage />} />
-
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>      
-    </div>
+    <Router>
+      <div className="App">
+        <Navbar />
+        <main>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/contacts" element={<ContactsPage />} />
+            <Route path="/admin" element={<AdminLoginPage />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   );
 }
 
