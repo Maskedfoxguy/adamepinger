@@ -6,7 +6,6 @@ import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import ProjectsPage from './pages/ProjectsPage';
 import ContactsPage from './pages/ContactsPage';
-import AdminLoginPage from './pages/AdminLoginPage';
 import './App.css';
 
 function App() {
@@ -20,7 +19,6 @@ function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/contacts" element={<ContactsPage />} />
-            <Route path="/admin" element={<AdminLoginPage />} />
           </Routes>
         </main>
       </div>

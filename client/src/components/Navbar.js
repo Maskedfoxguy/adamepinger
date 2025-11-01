@@ -6,13 +6,9 @@ import './Navbar.css';
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false); // Track whether the mobile menu is expanded.
 
-  function closeMenu() {
-    setMenuOpen(false); // Collapse the menu after selecting a link.
-  }
-
   return (
     <nav>
-      <NavLink to="/" className="title" onClick={closeMenu}>
+      <NavLink to="/" className="title" onClick={() => setMenuOpen(false)}>
         AE
       </NavLink>
       <div className="menu" onClick={() => setMenuOpen(!menuOpen)}>
@@ -22,24 +18,13 @@ function Navbar() {
       </div>
       <ul className={menuOpen ? 'open' : ''}>
         <li>
-          <NavLink to="/about" onClick={closeMenu}>
-            About
-          </NavLink>
+          <NavLink to="/about" onClick={() => setMenuOpen(false)}>About</NavLink>
         </li>
         <li>
-          <NavLink to="/projects" onClick={closeMenu}>
-            Projects
-          </NavLink>
+          <NavLink to="/projects" onClick={() => setMenuOpen(false)}>Projects</NavLink>
         </li>
         <li>
-          <NavLink to="/contacts" onClick={closeMenu}>
-            Contacts
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/admin" onClick={closeMenu}>
-            Admin
-          </NavLink>
+          <NavLink to="/contacts" onClick={() => setMenuOpen(false)}>Contacts</NavLink>
         </li>
       </ul>
     </nav>

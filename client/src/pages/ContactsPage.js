@@ -1,12 +1,9 @@
-// Placeholder for the future contact information and forms.
+// Displays the contacts page heading.
 import React from 'react';
 
 function ContactsPage() {
   return (
-    <section>
-      <h1>Contacts</h1>
-      <p>This page will list ways to reach Adam.</p>
-    </section>
+    <h1>CONTACTS</h1> // Placeholder showing where contact details will be added.
   );
 }
 
