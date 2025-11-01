@@ -1,8 +1,9 @@
+// Verifies that the app renders the homepage heading by default.
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('shows the homepage title', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  const heading = screen.getByText(/adam epinger/i); // Ensure the landing page headline is visible.
+  expect(heading).toBeInTheDocument();
 });
