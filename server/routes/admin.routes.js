@@ -456,7 +456,7 @@ function createAdminHandlers(models = {}) {
         return;
       }
 
-      const { password, ...safeAdmin } = admin;
+      const { password: _password, ...safeAdmin } = admin;
       res.status(200).json(safeAdmin);
     } catch (error) {
       next(error);

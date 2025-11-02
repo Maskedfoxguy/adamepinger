@@ -1,0 +1,13 @@
+{
+  "server/**/*.js": [
+    "eslint --fix",
+    "prettier --write"
+  ],
+  "client/src/**/*.{js,jsx}": [
+    "eslint --fix",
+    "prettier --write"
+  ],
+  "*.{json,md}": [
+    "prettier --write"
+  ]
+}

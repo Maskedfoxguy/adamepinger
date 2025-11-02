@@ -11,11 +11,16 @@ function Navbar() {
       <NavLink to="/" className="title" onClick={() => setMenuOpen(false)}>
         AE
       </NavLink>
-      <div className="menu" onClick={() => setMenuOpen(!menuOpen)}>
+      <button 
+        className="menu" 
+        onClick={() => setMenuOpen(!menuOpen)}
+        aria-label="Toggle navigation menu"
+        aria-expanded={menuOpen}
+      >
         <span></span>
         <span></span>
         <span></span>
-      </div>
+      </button>
       <ul className={menuOpen ? 'open' : ''}>
         <li>
           <NavLink to="/about" onClick={() => setMenuOpen(false)}>About</NavLink>

@@ -13,6 +13,9 @@ const cookieParser = require("cookie-parser");
 // unless the request if from the same domain, by default express wont accept POST requests
 const cors = require("cors");
 
+// Security middleware
+const helmet = require("helmet");
+
 const FRONTEND_URL = process.env.ORIGIN || "http://localhost:3000";
 
 // Middleware configuration
@@ -20,6 +23,25 @@ module.exports = (app) => {
   // Because this is a server that will accept requests from outside and it will be hosted ona server with a `proxy`, express needs to know that it should trust that setting.
   // Services like heroku use something called a proxy and you need to add this to your server
   app.set("trust proxy", 1);
+
+  // Security headers with Helmet
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          scriptSrc: ["'self'"],
+          imgSrc: ["'self'", "data:", "https:"],
+        },
+      },
+      hsts: {
+        maxAge: 31536000,
+        includeSubDomains: true,
+        preload: true,
+      },
+    })
+  );
 
   // controls a very specific header to pass headers from the frontend
   app.use(
@@ -34,8 +56,8 @@ module.exports = (app) => {
 
   // To have access to `body` property in the request
   // Express 5 keeps the request body APIs but we opt into JSON parsing explicitly.
-  app.use(express.json());
+  app.use(express.json({ limit: '10mb' }));
   // Express 5 defaults to the "simple" query parser, so we opt back into nested parsing.
-  app.use(express.urlencoded({ extended: true }));
+  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
   app.use(cookieParser());
 };

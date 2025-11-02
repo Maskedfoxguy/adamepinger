@@ -24,6 +24,6 @@ test('login link points to /login route', () => {
     </BrowserRouter>
   );
   
-  const loginLink = screen.getByText('Login').closest('a');
+  const loginLink = screen.getByRole('link', { name: 'Login' });
   expect(loginLink).toHaveAttribute('href', '/login');
 });
