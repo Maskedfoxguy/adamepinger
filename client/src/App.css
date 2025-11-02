@@ -1,3 +1,9 @@
+/* Provides layout styles for the main app wrapper and content area. */
+
 .App {
   text-align: center;
+}
+
+main {
+  padding: 1rem; /* Add breathing space around each page's content. */
 }
