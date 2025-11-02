@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import './Navbar.css';
 import logo from '../assets/images/AE-logo.png';
@@ -19,50 +19,92 @@ const SearchIcon = () => (
 );
 
 function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const firstLinkRef = useRef(null);
 
-  const toggleMenu = () => setIsMenuOpen(v => !v);
-  const handleLinkClick = () => setIsMenuOpen(false);
+  const links = [
+    { to: '/about', label: 'About' },
+    { to: '/projects', label: 'Projects' },
+    { to: '/contacts', label: 'Contacts' },
+    { to: '/login', label: 'Login' },
+  ];
+
+  const toggle = () => setOpen(v => !v);
+  const close = () => setOpen(false);
+
+  useEffect(() => {
+    if (open && firstLinkRef.current) firstLinkRef.current.focus();
+  }, [open]);
+
+  // Close on Escape + lock body scroll while open
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') close(); };
+    document.addEventListener('keydown', onKey);
+    document.body.classList.toggle('nav-open', open);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.classList.remove('nav-open');
+    };
+  }, [open]);
 
   return (
-    <header className="app-header">
-      <div className="header-left">
-        {/* Anchor keeps dropdown aligned with hamburger */}
-        <div className="menu-anchor">
+    <>
+      <header className="app-header">
+        <div className="header-left">
           <button
-            onClick={toggleMenu}
+            onClick={toggle}
             className="icon-button hamburger-button"
-            aria-expanded={isMenuOpen}
+            aria-expanded={open}
+            aria-controls="nav-overlay"
             aria-label="Open menu"
           >
             <HamburgerIcon />
           </button>
-
-          {isMenuOpen && (
-            <nav className="dropdown-nav" aria-label="Primary">
-              <ul className="menu-list is-open">
-                <li className="menu-item"><NavLink to="/about" onClick={handleLinkClick} className="menu-link">About</NavLink></li>
-                <li className="menu-item"><NavLink to="/projects" onClick={handleLinkClick} className="menu-link">Projects</NavLink></li>
-                <li className="menu-item"><NavLink to="/contacts" onClick={handleLinkClick} className="menu-link">Contacts</NavLink></li>
-                <li className="menu-item"><NavLink to="/login" onClick={handleLinkClick} className="menu-link">Login</NavLink></li>
-              </ul>
-            </nav>
-          )}
         </div>
-      </div>
 
-      <div className="header-center">
-        <Link to="/" onClick={handleLinkClick} aria-label="Go to homepage">
-          <img src={logo} alt="AE Logo Home" className="logo-image" />
-        </Link>
-      </div>
+        <div className="header-center">
+          <Link to="/" onClick={close} aria-label="Go to homepage">
+            <img src={logo} alt="AE Logo Home" className="logo-image" />
+          </Link>
+        </div>
 
-      <div className="header-right">
-        <button className="icon-button search-button" aria-label="Open search">
-          <SearchIcon />
-        </button>
-      </div>
-    </header>
+        <div className="header-right">
+          <button className="icon-button search-button" aria-label="Open search">
+            <SearchIcon />
+          </button>
+        </div>
+      </header>
+
+      {/* Full-screen overlay menu */}
+      <aside
+        id="nav-overlay"
+        className={`nav-overlay ${open ? 'open' : ''}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Site navigation"
+        onClick={(e) => {
+          // click on empty overlay area closes; clicks inside the panel don't
+          if (e.target.classList.contains('nav-overlay')) close();
+        }}
+      >
+        <nav className="overlay-nav">
+          <ul className="overlay-list">
+            {links.map((l, idx) => (
+              <li className="overlay-item" style={{ '--i': idx }} key={l.to}>
+                <NavLink
+                  to={l.to}
+                  onClick={close}
+                  className="overlay-link"
+                  ref={idx === 0 ? firstLinkRef : undefined}
+                >
+                  {l.label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+    </>
   );
 }
 
