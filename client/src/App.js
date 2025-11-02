@@ -5,9 +5,6 @@ import {
   Outlet,
   createBrowserRouter,
 } from 'react-router-dom';
-// Sets up routing and layout for the portfolio app.
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
@@ -24,23 +21,6 @@ function AppLayout() {
         <Outlet />
       </main>
     </div>
-import './App.css';
-
-function App() {
-  return (
-    <Router>
-      <div className="App">
-        <Navbar />
-        <main>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/contacts" element={<ContactsPage />} />
-          </Routes>
-        </main>
-      </div>
-    </Router>
   );
 }
 
@@ -63,7 +43,7 @@ const router = createBrowserRouter(
         { path: 'about', element: <AboutPage /> },
         { path: 'projects', element: <ProjectsPage /> },
         { path: 'contacts', element: <ContactsPage /> },
-        { path: 'auth/login', element: <AdminLoginPage /> },
+        { path: 'login', element: <AdminLoginPage /> },
       ],
     },
   ],

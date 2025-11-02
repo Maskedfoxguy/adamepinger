@@ -26,6 +26,9 @@ function Navbar() {
         <li>
           <NavLink to="/contacts" onClick={() => setMenuOpen(false)}>Contacts</NavLink>
         </li>
+        <li>
+          <NavLink to="/login" onClick={() => setMenuOpen(false)}>Login</NavLink>
+        </li>
       </ul>
     </nav>
   );
