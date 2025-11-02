@@ -105,7 +105,7 @@ Configure in `package.json`:
 - **Code splitting** available via React.lazy
 - **Bundle analysis** can be added with webpack-bundle-analyzer
 - **Lazy loading** for non-critical components
-- **Body size limits** (10MB) configured in server
+- **Body size limits** (1MB) configured in server
 
 ### Recommendations:
 ```bash

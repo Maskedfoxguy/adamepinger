@@ -56,8 +56,9 @@ module.exports = (app) => {
 
   // To have access to `body` property in the request
   // Express 5 keeps the request body APIs but we opt into JSON parsing explicitly.
-  app.use(express.json({ limit: '10mb' }));
+  // Limit body size to 1MB to prevent DoS attacks
+  app.use(express.json({ limit: '1mb' }));
   // Express 5 defaults to the "simple" query parser, so we opt back into nested parsing.
-  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '1mb' }));
   app.use(cookieParser());
 };

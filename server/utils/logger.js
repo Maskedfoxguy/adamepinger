@@ -25,11 +25,19 @@ const format = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
   winston.format.colorize({ all: true }),
   winston.format.printf(info => {
-    // Mask sensitive information
+    // Mask sensitive information with comprehensive patterns
     const message = typeof info.message === 'string' 
-      ? info.message.replace(/password[=:]\s*\S+/gi, 'password=***')
-                    .replace(/token[=:]\s*\S+/gi, 'token=***')
-                    .replace(/authorization:\s*\S+/gi, 'authorization: ***')
+      ? info.message
+          // Passwords (various forms)
+          .replace(/password[=:]\s*[^\s]+/gi, 'password=***')
+          .replace(/\b(pwd|pass)[=:]\s*[^\s]+/gi, '$1=***')
+          // Tokens and authentication
+          .replace(/token[=:]\s*[^\s]+/gi, 'token=***')
+          .replace(/authorization:\s*[^\s]+/gi, 'authorization: ***')
+          .replace(/bearer\s+[^\s]+/gi, 'bearer ***')
+          .replace(/\bauth[=:]\s*[^\s]+/gi, 'auth=***')
+          // API keys and secrets
+          .replace(/\b(api[_-]?key|secret)[=:]\s*[^\s]+/gi, '$1=***')
       : info.message;
     
     return `${info.timestamp} ${info.level}: ${message}`;

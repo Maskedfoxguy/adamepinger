@@ -12,6 +12,7 @@ function Navbar() {
         AE
       </NavLink>
       <button 
+        type="button"
         className="menu" 
         onClick={() => setMenuOpen(!menuOpen)}
         aria-label="Toggle navigation menu"
