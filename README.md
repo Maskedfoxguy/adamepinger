@@ -6,7 +6,7 @@ A personal resume website showcasing my professional journey, portfolio, and pro
 
 **Live Demo:** [Not available yet]
 
-![Website Screenshot](/assets/screenshot.png)
+
 
 ## 🚀 Technologies Used
 
