@@ -1,0 +1,16 @@
+{
+  "name": "adamepinger",
+  "version": "1.0.0",
+  "description": "A personal resume website showcasing my professional journey, portfolio, and projects (both completed and in progress). Features include a dynamic gallery, project updates, and an overview of my skills and experiences.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npm start --prefix server\" \"npm start --prefix client\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
