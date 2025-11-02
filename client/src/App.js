@@ -16,6 +16,9 @@ import './App.css';
 function AppLayout() {
   return (
     <div className="App">
+      {/* Add the glass effect layer here, as the first child */}
+      <div className="glass-layer"></div>
+
       <Navbar />
       <main>
         <Outlet />
