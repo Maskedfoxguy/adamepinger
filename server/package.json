@@ -11,8 +11,7 @@
     "lint:fix": "eslint . --ext .js --fix",
     "format": "prettier --write \"**/*.{js,json,md}\"",
     "format:check": "prettier --check \"**/*.{js,json,md}\"",
-    "depcheck": "depcheck",
-    "prepare": "husky"
+    "depcheck": "depcheck"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -26,15 +25,12 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.1",
     "morgan": "^1.10.0",
-    "pino": "^10.1.0",
     "supertest": "^7.1.4",
     "winston": "^3.18.3"
   },
   "devDependencies": {
     "depcheck": "^1.4.7",
     "eslint": "^8.57.1",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.6",
     "nodemon": "^3.1.7",
     "prettier": "^3.6.2"
   }

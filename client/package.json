@@ -21,8 +21,7 @@
     "lint:fix": "eslint src --ext .js,.jsx --fix",
     "format": "prettier --write \"src/**/*.{js,jsx,json,css,md}\"",
     "format:check": "prettier --check \"src/**/*.{js,jsx,json,css,md}\"",
-    "depcheck": "depcheck",
-    "prepare": "cd .. && husky install"
+    "depcheck": "depcheck"
   },
   "eslintConfig": {
     "extends": [
@@ -49,8 +48,6 @@
     "@testing-library/user-event": "^14.5.2",
     "depcheck": "^1.4.7",
     "eslint-plugin-jsx-a11y": "^6.10.2",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.6",
     "prettier": "^3.6.2"
   }
 }
