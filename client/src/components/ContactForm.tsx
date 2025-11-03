@@ -9,8 +9,9 @@ const ContactForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // TODO: Replace with actual API call for production
     console.log("Contact form submitted", { name, email, message });
-    // Clear only the message field after submission
+    // Clear only the message field to allow users to easily send follow-up messages
     setMessage("");
   };
 
