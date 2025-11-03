@@ -1,6 +1,17 @@
 /* Disable page scroll while the overlay is open */
 body.nav-open { overflow: hidden; }
 
+:root{
+  /* Negative = move logo left, Positive = move logo right */
+  --logo-nudge: -30px;  /* try -8px, -10px, or -12px to taste */
+}
+
+.header-center > a {
+  display: inline-block;
+  transform: translateX(var(--logo-nudge));
+}
+
+
 /* ---------- Header (match your app glass layer) ---------- */
 .app-header{
   display:flex;
@@ -55,6 +66,7 @@ body.nav-open { overflow: hidden; }
 
 /* ---------- FULL-SCREEN OVERLAY MENU ---------- */
 .nav-overlay{
+  border-right: none;
   position:fixed; inset:0; z-index:250;
   transform: translateX(-100%); /* slide from left */
   opacity: 0;
@@ -76,16 +88,26 @@ body.nav-open { overflow: hidden; }
   display:flex;
   align-items:center;
   justify-content:center;
+  position: relative;
 }
 
+
 .overlay-list{
-  list-style:none;
-  margin:0; padding:0;
-  display:flex;
-  flex-direction:column;
+  position: absolute;            
+  left: 50%;                     
+  top: 50%;                      
+  transform: translate(-50%, -50%); 
+  margin: 0;                     
+  padding: 0;
+  list-style: none;
+
+  display: flex;
+  flex-direction: column;
   gap: clamp(1rem, 2.2vh, 1.6rem);
-  align-items:center;
-  text-align:center;
+  align-items: center;
+  text-align: center;
+  width: max-content;            /* shrink to fit the links */
+  max-width: calc(100vw - 32px); /* stay inside viewport with 16px gutters */
 }
 
 /* Gentle fade-up stagger for items */
@@ -162,6 +184,10 @@ body.nav-open { overflow: hidden; }
 @media (max-width: 520px){
   .overlay-link{ font-size: clamp(1.3rem, 6vw, 1.6rem); }
   .overlay-list{ gap: 1.2rem; }
+}
+
+@media (max-width: 520px){
+  :root{ --logo-nudge: -6px; }
 }
 
 /* Respect reduced motion */
