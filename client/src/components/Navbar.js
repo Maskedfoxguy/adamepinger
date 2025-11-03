@@ -3,13 +3,9 @@ import { NavLink, Link } from 'react-router-dom';
 import './Navbar.css';
 import logo from '../assets/images/AE-logo.png';
 
-const HamburgerIcon = () => (
-  <svg width="30" height="30" viewBox="0 0 100 80" fill="#fff" aria-hidden="true">
-    <rect width="100" height="15" rx="8"></rect>
-    <rect y="30" width="100" height="15" rx="8"></rect>
-    <rect y="60" width="100" height="15" rx="8"></rect>
-  </svg>
-);
+/* Use your new hamburger asset (adjust extension if needed) */
+import geoHamburger from '../assets/images/GeoHamburger.png';
+// If your actual file is named with a space, rename it to GeoHamburger.svg (recommended).
 
 const SearchIcon = () => (
   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -58,7 +54,7 @@ function Navbar() {
             aria-controls="nav-overlay"
             aria-label="Open menu"
           >
-            <HamburgerIcon />
+            <img src={geoHamburger} alt="Open menu" className="hamburger-img" />
           </button>
         </div>
 
@@ -83,7 +79,7 @@ function Navbar() {
         aria-modal="true"
         aria-label="Site navigation"
         onClick={(e) => {
-          // click on empty overlay area closes; clicks inside the panel don't
+          // clicking blank overlay area closes; clicks on content don't
           if (e.target.classList.contains('nav-overlay')) close();
         }}
       >
