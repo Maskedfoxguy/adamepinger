@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "es5", // Compile down to older, more compatible JavaScript.
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true, // Allow importing of .js files.
+    "skipLibCheck": true, // Skip type checking of declaration files.
+    "esModuleInterop": true, // Helps with importing CommonJS modules.
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext", // Use the modern ES module system.
+    "moduleResolution": "node", // How TS finds modules (the standard way).
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true, // CRA handles emitting files, not TS.
+    "jsx": "react-jsx" // The setting we confirmed earlier.
+  },
+  "include": [
+    "src" // Only look for files inside the 'src' directory.
+  ]
+}
