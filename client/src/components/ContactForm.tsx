@@ -1,101 +1,82 @@
 // ContactForm.tsx
 // A minimal contact form for the single-scroll flow.
+// No backend wiring yet — the form prevents default submit and logs values so you can test.
 import React, { useState } from "react";
 
 const ContactForm: React.FC = () => {
+  // Local state keeps this simple; later you can swap to form libraries or use refs.
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Replace with actual API call for production
+    e.preventDefault(); // prevent page reload
+    // For now we log — later step will send this to your backend or a service.
     console.log("Contact form submitted", { name, email, message });
-    // Clear only the message field to allow users to easily send follow-up messages
+    // Gentle UX: clear message so user gets visual feedback.
     setMessage("");
+    // Note: add validation and spam protection later.
   };
 
   return (
-    <section
-      id="contact-form"
-      className="min-h-screen py-16 px-4 bg-gradient-to-br from-gray-50 to-gray-100"
-      aria-label="Contact form section"
-    >
-      <div className="max-w-2xl mx-auto">
-        <h2 className="text-4xl font-bold text-gray-900 mb-8 text-center">
-          Get In Touch
-        </h2>
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white rounded-lg shadow-lg p-8"
-          aria-label="Contact form"
+    <section id="contact" aria-label="Contact section" className="py-12 px-6">
+      <h2 className="text-2xl font-semibold mb-4 text-center">Contact</h2>
+
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-xl mx-auto grid gap-4"
+        aria-label="Contact form"
+      >
+        {/* Name input */}
+        <label className="flex flex-col">
+          <span className="text-sm font-medium">Name</span>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Your name"
+            className="border rounded px-3 py-2"
+            aria-label="Your name"
+          />
+        </label>
+
+        {/* Email input */}
+        <label className="flex flex-col">
+          <span className="text-sm font-medium">Email</span>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
+            className="border rounded px-3 py-2"
+            aria-label="Your email"
+          />
+        </label>
+
+        {/* Message textarea */}
+        <label className="flex flex-col">
+          <span className="text-sm font-medium">Message</span>
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Write a short message..."
+            rows={5}
+            className="border rounded px-3 py-2"
+            aria-label="Your message"
+          />
+        </label>
+
+        {/* Submit button */}
+        <button
+          type="submit"
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          aria-label="Send message"
         >
-          <div className="mb-6">
-            <label
-              htmlFor="contact-name"
-              className="block text-gray-700 font-semibold mb-2"
-            >
-              Name
-            </label>
-            <input
-              type="text"
-              id="contact-name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              placeholder="Your name"
-              required
-              aria-required="true"
-            />
-          </div>
+          Send message
+        </button>
+      </form>
 
-          <div className="mb-6">
-            <label
-              htmlFor="contact-email"
-              className="block text-gray-700 font-semibold mb-2"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="contact-email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              placeholder="your.email@example.com"
-              required
-              aria-required="true"
-            />
-          </div>
-
-          <div className="mb-6">
-            <label
-              htmlFor="contact-message"
-              className="block text-gray-700 font-semibold mb-2"
-            >
-              Message
-            </label>
-            <textarea
-              id="contact-message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              rows={5}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-vertical"
-              placeholder="Your message here..."
-              required
-              aria-required="true"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
-            aria-label="Submit contact form"
-          >
-            Send Message
-          </button>
-        </form>
-      </div>
+      {/* Note: next steps — add client-side validation, loading states, and a POST to your backend or an email service. */}
     </section>
   );
 };
