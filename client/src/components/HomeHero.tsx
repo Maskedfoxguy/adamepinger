@@ -13,13 +13,12 @@ const HomeHero: React.FC = () => {
     >
       {/* Main heading — use one H1 per page (if this component is used on the main page it can be H1).
           Headings give structure and help SEO + accessibility. */}
-      <h1 className="text-3xl md:text-5xl font-bold mb-4">Hi — I'm Adam Pinger</h1>
+      <h1 className="text-3xl md:text-5xl font-bold mb-4">Hi! I'm Epinger Ádám</h1>
 
       {/* Short intro paragraph. Keep content concise so visitors scan quickly. */}
       <p className="max-w-2xl mx-auto text-gray-700 mb-6">
         I'm a frontend developer rebuilding my skills and crafting readable,
-        accessible web interfaces. This site is my portfolio and résumé — enjoy
-        the scroll.
+        accessible web interfaces. This site is my portfolio and résumé.
       </p>
 
       {/* CTA linking to the Projects section — an in-page anchor makes the single-scroll flow smooth. */}
