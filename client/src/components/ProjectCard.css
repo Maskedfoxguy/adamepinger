@@ -1,0 +1,69 @@
+/* client/src/components/ProjectCard.css */
+/* Styles for the 3D flipping project card. */
+
+/* This is the main container that enables the 3D space. */
+.project-card-container {
+  /* The size of our card. */
+  width: 300px;
+  height: 300px;
+  /* This tells the browser that children of this element should be treated in a 3D space, not a flat plane. 'perspective' is like the 'focal length' of the camera. */
+  perspective: 1000px;
+}
+
+/* This is the inner wrapper that will perform the flip animation. */
+.project-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  /* Set the animation speed for the flip. */
+  transition: transform 0.8s;
+  /* This is crucial. It creates the 3D effect for the card's front and back faces. */
+  transform-style: preserve-3d;
+}
+
+/* This is the trigger. When we hover over the container, the inner wrapper flips 180 degrees. */
+.project-card-container:hover .project-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* This defines the shared styles for BOTH the front and back of the card. */
+.project-card-front,
+.project-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  /* This property hides the back-side of an element when it's facing away from the user. This is essential for the flip effect. */
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+  
+  /* --- This is your "Soft Glass" effect --- */
+  /* A mix of light blue and white, with transparency. */
+  background: rgba(173, 216, 230, 0.2); /* Light blue with 20% opacity */
+  /* This blurs the content behind the element, creating the frosted glass look. */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Safari */
+  /* The soft edges you wanted. */
+  border-radius: 15px;
+  /* A very subtle border to help it stand out. */
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  /* A soft shadow to give it depth. */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+
+  /* Flexbox utilities to center the content perfectly. */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* The back of the card needs to be pre-rotated to face away initially. */
+.project-card-back {
+  /* Start the back face rotated 180 degrees. */
+  transform: rotateY(180deg);
+  /* Ensure the background image covers the card without stretching. */
+  background-size: cover;
+  background-position: center;
+  /* Remove padding so the image fills the edges. */
+  padding: 0;
+}

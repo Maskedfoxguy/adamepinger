@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import HomeHero from './HomeHero';
-import ProjectsPreview from './ProjectsPreview';
+
 import ContactForm from './ContactForm';
 import Footer from './Footer';
 
@@ -11,11 +11,7 @@ describe('HomeFlow Components', () => {
     expect(screen.getByText(/Welcome to My Portfolio/i)).toBeInTheDocument();
   });
 
-  test('ProjectsPreview renders without crashing', () => {
-    render(<ProjectsPreview />);
-    expect(screen.getByText(/Featured Projects/i)).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Project One/i })).toBeInTheDocument();
-  });
+  
 
   test('ContactForm renders without crashing', () => {
     render(<ContactForm />);

@@ -1,13 +1,18 @@
+// client/src/pages/HomePage.tsx
+// The main single-scroll landing page for the site.
+
 import React from 'react';
 import HomeHero from '../components/HomeHero';
+// 1. Import the new ProjectsSection component.
+import ProjectsSection from '../components/ProjectsSection';
 
 const HomePage: React.FC = () => {
   return (
     <div>
-      {/* The first section of our page is the HomeHero */}
       <HomeHero />
-      
-      {/* We will add more components here later, like ProjectsPreview, etc. */}
+      {/* 2. Place the new section right below the hero. */}
+      <ProjectsSection />
+      {/* Other page sections can be added here later. */}
     </div>
   );
 };
