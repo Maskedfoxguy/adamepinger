@@ -1,0 +1,32 @@
+.site-footer {
+
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(10, 10, 15, 0.95) 50%
+  );
+  color: white;
+  padding: 8rem 2rem 2rem; 
+  width: 100%;
+}
+
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto; 
+}
+
+
+.footer-column-left,
+.footer-column-right {
+
+}
+
+.footer-watermark {
+  
+}

@@ -2,17 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import './Navbar.css';
 import logo from '../assets/images/AE-logo.png';
+import magnifierIcon from '../assets/images/magnifier_geometric.png';
 
 /* Use your new hamburger asset (adjust extension if needed) */
 import geoHamburger from '../assets/images/GeoHamburger.png';
 // If your actual file is named with a space, rename it to GeoHamburger.svg (recommended).
 
-const SearchIcon = () => (
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <circle cx="11" cy="11" r="8"></circle>
-    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-  </svg>
-);
+
 
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -66,7 +62,7 @@ function Navbar() {
 
         <div className="header-right">
           <button className="icon-button search-button" aria-label="Open search">
-            <SearchIcon />
+            <img src={magnifierIcon} alt="Search" className="search-img" />
           </button>
         </div>
       </header>
