@@ -1,7 +1,5 @@
-/* Provides layout styles for the main app wrapper and content area. */
-
 .App {
-  /* Set a dark blue fallback color, similar to this chat's theme */
+
   background-color: #0d1117;
   background-image: linear-gradient(rgba(40, 44, 52, 0.7), rgba(40, 44, 52, 0.7)), url('./assets/images/backgroundimage1.jpg');
   background-size: cover;
@@ -10,19 +8,16 @@
   min-height: 100vh;
   color: white;
   text-align: center;
-
-  /* Added to contain the absolutely positioned glass layer */
   position: relative;
-  overflow: hidden; /* Prevents blur from spilling outside the container */
+  overflow: hidden;
 }
 
 main {
-  padding: 1rem; /* Add breathing space around each page's content. */
-  position: relative; /* Ensure content stays above the glass layer */
+  padding-block: 1rem; 
+  position: relative; 
   z-index: 2;
 }
 
-/* --- New Styles for Glassmorphism Effect --- */
 
 .glass-layer {
   position: absolute;
@@ -31,20 +26,19 @@ main {
   width: 100%;
   height: 100%;
 
-  background: rgba(255, 255, 255, 0.08); /* Light tint for the glass feel */
+  background: rgba(255, 255, 255, 0.08); 
   
-  /* --- REDUCED BLUR VALUE HERE --- */
   backdrop-filter: blur(4px) saturate(150%);
   -webkit-backdrop-filter: blur(4px) saturate(150%);
 
-  border: 1px solid rgba(255, 255, 255, 0.2); /* subtle border for edge visibility */
-  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1); /* optional reflection mimic */
+  border: 1px solid rgba(255, 255, 255, 0.2); 
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
 
-  z-index: 1; /* Sits between the background and the content */
-  pointer-events: none; /* ensures it's decorative and doesn't block clicks */
+  z-index: 1; 
+  pointer-events: none; 
 }
 
-/* Optional soft light reflection effect */
+
 .glass-layer::before {
   content: '';
   position: absolute;
