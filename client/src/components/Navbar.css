@@ -1,13 +1,10 @@
-/* Disable page scroll while the overlay is open */
 body.nav-open { overflow: hidden; }
 
 :root {
   --logo-nudge: 0px;
-  /* New variable for responsive bubble animation origin */
-  --bubble-origin: 3rem; /* Default for larger screens */
+  --bubble-origin: 3rem;
 }
 
-/* ---------- SEAMLESS Header ---------- */
 .app-header {
   display: flex;
   justify-content: space-between;
@@ -38,10 +35,8 @@ body.nav-open { overflow: hidden; }
 
 .search-img { height: 50px; transform: translate(0 , -4px);}
 
-/* ---------- "GROWING BUBBLE" OVERLAY MENU ---------- */
 .nav-overlay {
   position: fixed; inset: 0; z-index: 250;
-  /* Use the CSS variable for a responsive origin point */
   clip-path: circle(0% at var(--bubble-origin) var(--bubble-origin));
   transition: clip-path 650ms cubic-bezier(0.65, 0, 0.35, 1);
   background: rgba(12, 16, 20, 0.60);
@@ -90,12 +85,6 @@ body.nav-open { overflow: hidden; }
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* ==================================================== */
-/* =============== RESPONSIVE STYLES ================ */
-/* ==================================================== */
-
-/* --- TABLET (Portrait and Landscape) --- */
-/* (768px to 1023px) */
 @media (max-width: 1023px) {
   :root {
     --logo-nudge: -15px;
@@ -106,8 +95,6 @@ body.nav-open { overflow: hidden; }
   .overlay-link { font-size: clamp(1.5rem, 3.5vw, 2.2rem); }
 }
 
-/* --- SMARTPHONE (Large to Small) --- */
-/* (up to 767px) */
 @media (max-width: 767px) {
   :root {
     --logo-nudge: -8px;
@@ -119,8 +106,6 @@ body.nav-open { overflow: hidden; }
   .overlay-list { gap: 0.8rem; }
 }
 
-/* --- SMARTPHONE (Landscape) --- */
-/* Tall phones turned sideways have little vertical space */
 @media (max-width: 900px) and (max-height: 500px) and (orientation: landscape) {
   .overlay-link {
     font-size: 1.2rem;
@@ -131,14 +116,13 @@ body.nav-open { overflow: hidden; }
   }
 }
 
-/* --- REDUCED MOTION --- */
 @media (prefers-reduced-motion: reduce) {
   .overlay-item, .overlay-link, .nav-overlay {
     animation: none !important;
     transition: none !important;
   }
   .overlay-link::after { transform: translateX(-50%) scaleX(1); }
-  .nav-overlay { clip-path: none; } /* On reduce motion, just fade in */
+  .nav-overlay { clip-path: none; }
   .nav-overlay:not(.open) { opacity: 0; }
   .nav-overlay.open { opacity: 1; }
 }

@@ -1,4 +1,3 @@
-// Allows the admin to authenticate against the backend API.
 import React, { useState } from 'react';
 import { loginAdmin } from '../services/api';
 
@@ -21,7 +20,7 @@ function AdminLoginPage() {
 
     try {
       const { authToken } = await loginAdmin(formData);
-      localStorage.setItem('adminToken', authToken); // Persist the token so later requests can reuse it.
+      localStorage.setItem('adminToken', authToken);
       setSuccessMessage('Login successful! Token stored for future requests.');
     } catch (apiError) {
       setError(apiError.message || 'Unable to log in.');

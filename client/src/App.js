@@ -1,4 +1,3 @@
-// Creates the data router and layout shell for the portfolio app.
 import React from 'react';
 import {
   RouterProvider,
@@ -16,7 +15,6 @@ import './App.css';
 function AppLayout() {
   return (
     <div className="App">
-      {/* Add the glass effect layer here, as the first child */}
       <div className="glass-layer"></div>
 
       <Navbar />
@@ -28,12 +26,12 @@ function AppLayout() {
 }
 
 const futureFlags = {
-  v7_startTransition: true, // Opt in now so the app is ready for React Router v7 behaviour.
-  v7_relativeSplatPath: true, // Matches the upcoming relative path resolution rules.
-  v7_fetcherPersist: true, // Mirrors the new fetcher lifecycle so no surprises on upgrade.
-  v7_normalizeFormMethod: true, // Aligns HTML form method casing with the next major release.
-  v7_partialHydration: true, // Ensures hydration matches the v7 expectations.
-  v7_skipActionErrorRevalidation: true, // Prevents unexpected refetching after action errors in v7.
+  v7_startTransition: true,
+  v7_relativeSplatPath: true,
+  v7_fetcherPersist: true,
+  v7_normalizeFormMethod: true,
+  v7_partialHydration: true,
+  v7_skipActionErrorRevalidation: true,
 };
 
 const router = createBrowserRouter(

@@ -1,4 +1,3 @@
-// Returns public contact details without exposing admin-only data.
 const express = require("express");
 const ContactInfo = require("../models/ContactInfo.model");
 

@@ -1,4 +1,3 @@
-// Exposes read-only skill information for the public portfolio.
 const express = require("express");
 const Skill = require("../models/Skill.model");
 

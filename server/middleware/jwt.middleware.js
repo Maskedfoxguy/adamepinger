@@ -1,13 +1,10 @@
-// Provides JWT authentication middleware with development fallbacks.
 const { expressjwt } = require("express-jwt");
 
 const DEVELOPMENT_SECRET = "development-jwt-secret";
 let cachedSecret;
 
-// Resolve the runtime JWT secret while making the production requirement explicit.
 function resolveTokenSecret() {
   if (cachedSecret) {
-    // Reuse the cached secret so we only log the fallback warning once per boot.
     return cachedSecret;
   }
 

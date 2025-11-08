@@ -1,4 +1,3 @@
-// Stores the public bio and personal summary that appears on the portfolio site.
 const { Schema, model } = require("mongoose");
 
 const aboutSchema = new Schema(

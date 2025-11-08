@@ -1,4 +1,3 @@
-// Offers lightweight helpers for talking to the Express backend.
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
 
 async function request(path, options = {}) {
@@ -12,9 +11,7 @@ async function request(path, options = {}) {
       if (body && body.message) {
         message = body.message;
       }
-    } catch (error) {
-      // Swallow JSON parse errors so the original status drives the message.
-    }
+    } catch (error) {}
 
     const apiError = new Error(message);
     apiError.status = response.status;
@@ -29,17 +26,14 @@ async function request(path, options = {}) {
 }
 
 export async function fetchAbout() {
-  // The about endpoint returns the latest bio entry for the portfolio.
   return request('/api/about');
 }
 
 export async function fetchProjects() {
-  // Portfolio projects are exposed under the /api/portfolio namespace.
   return request('/api/portfolio');
 }
 
 export async function loginAdmin(credentials) {
-  // Sends admin credentials to the auth endpoint and returns the issued token.
   return request('/auth/login', {
     method: 'POST',
     headers: JSON_HEADERS,

@@ -1,4 +1,3 @@
-// Captures professional journey entries including roles, dates, and key achievements.
 const { Schema, model } = require("mongoose");
 
 const professionalJourneySchema = new Schema(
@@ -18,7 +17,7 @@ const professionalJourneySchema = new Schema(
       },
       endYear: {
         type: Number,
-        required: false, // Can be empty if it's the current job
+        required: false,
       },
       endMonth: {
         type: String,

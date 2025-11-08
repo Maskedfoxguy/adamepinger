@@ -5,11 +5,9 @@ const Admin = require("../models/Admin.model");
 
 const { isAuthenticated, resolveTokenSecret } = require("../middleware/jwt.middleware");
 
-// Resolve once so the login route shares the same secret logic as the JWT middleware.
 const tokenSecret = resolveTokenSecret();
 
-const router = express.Router(); 
-// POST --> auth/login
+const router = express.Router();
 
 router.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
@@ -20,7 +18,6 @@ router.post("/login", async (req, res, next) => {
   }
 
   try {
-    // Look up the admin record before comparing passwords.
     const foundAdmin = await Admin.findOne({ email });
 
     if (!foundAdmin) {
@@ -28,7 +25,6 @@ router.post("/login", async (req, res, next) => {
       return;
     }
 
-    // bcryptjs exposes a promise API that keeps the event loop free.
     const passwordCorrect = await bcrypt.compare(password, foundAdmin.password);
 
     if (!passwordCorrect) {
@@ -37,10 +33,8 @@ router.post("/login", async (req, res, next) => {
     }
 
     const { _id, firstName, lastName, role } = foundAdmin;
-    // Preserve the email from the request payload to avoid accidental schema reads.
     const payload = { _id, email, firstName, lastName, role };
 
-    // Attach the payload so downstream middleware can trust the authentication context.
     req.admin = payload;
 
     const authToken = jwt.sign(payload, tokenSecret, {
@@ -50,16 +44,12 @@ router.post("/login", async (req, res, next) => {
 
     res.status(200).json({ authToken });
   } catch (error) {
-    // Forward unexpected errors to the global error handler.
     next(error);
   }
 });
 
-
 router.get("/verify", isAuthenticated, (req, res) => {
   res.status(200).json(req.payload);
 });
-
-
 
 module.exports = router;
