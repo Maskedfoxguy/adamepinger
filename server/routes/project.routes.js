@@ -1,4 +1,3 @@
-// Provides read-only access to the portfolio projects collection.
 const express = require("express");
 const { isValidObjectId } = require("mongoose");
 const Project = require("../models/Project.model");

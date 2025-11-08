@@ -1,6 +1,3 @@
-// Usage:
-//   node server/scripts/seed-admin.js "Ada" "Lovelace" "ada@example.com" "P@ssw0rd123"
-// Requires MONGODB_URI in .env (or falls back to local)
 require("dotenv").config();
 const mongoose = require("mongoose");
 const Admin = require("../models/Admin.model");
@@ -28,7 +25,7 @@ async function main() {
     firstName,
     lastName,
     email,
-    password, // pre-save hook will hash
+    password,
     role: "admin",
   });
 

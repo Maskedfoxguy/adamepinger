@@ -1,4 +1,3 @@
-// Represents an individual skill that can be displayed on the public site.
 const { Schema, model } = require("mongoose");
 
 const skillSchema = new Schema(

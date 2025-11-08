@@ -1,5 +1,4 @@
 const isAdmin = (req, res, next) => {
-  // The JWT payload is attached as req.payload by express-jwt
   if (req.payload && req.payload.role === "admin") {
     return next();
   }
@@ -7,22 +6,3 @@ const isAdmin = (req, res, next) => {
 };
 
 module.exports = { isAdmin };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

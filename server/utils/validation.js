@@ -1,4 +1,3 @@
-// Provides small, reusable helpers for request payload validation before hitting MongoDB.
 const urlPattern = /^https?:\/\/.+/i;
 const emailPattern = /.+@.+\..+/i;
 

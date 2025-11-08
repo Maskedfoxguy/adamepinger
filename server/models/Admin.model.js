@@ -1,4 +1,3 @@
-// Defines the admin schema and hashes admin passwords before saving.
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcryptjs");
 

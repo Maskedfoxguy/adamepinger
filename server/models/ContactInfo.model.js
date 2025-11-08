@@ -1,4 +1,3 @@
-// Stores the contact details that should be displayed publicly.
 const { Schema, model } = require("mongoose");
 
 const contactInfoSchema = new Schema(

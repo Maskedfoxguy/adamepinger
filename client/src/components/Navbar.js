@@ -3,12 +3,7 @@ import { NavLink, Link } from 'react-router-dom';
 import './Navbar.css';
 import logo from '../assets/images/AE-logo.png';
 import magnifierIcon from '../assets/images/magnifier_geometric.png';
-
-/* Use your new hamburger asset (adjust extension if needed) */
 import geoHamburger from '../assets/images/GeoHamburger.png';
-// If your actual file is named with a space, rename it to GeoHamburger.svg (recommended).
-
-
 
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -28,7 +23,6 @@ function Navbar() {
     if (open && firstLinkRef.current) firstLinkRef.current.focus();
   }, [open]);
 
-  // Close on Escape + lock body scroll while open
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') close(); };
     document.addEventListener('keydown', onKey);
@@ -67,7 +61,6 @@ function Navbar() {
         </div>
       </header>
 
-      {/* Full-screen overlay menu */}
       <aside
         id="nav-overlay"
         className={`nav-overlay ${open ? 'open' : ''}`}
@@ -75,7 +68,6 @@ function Navbar() {
         aria-modal="true"
         aria-label="Site navigation"
         onClick={(e) => {
-          // clicking blank overlay area closes; clicks on content don't
           if (e.target.classList.contains('nav-overlay')) close();
         }}
       >
