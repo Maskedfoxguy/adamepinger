@@ -1,4 +1,3 @@
-// Serves the about/bio information that appears on the public site.
 const express = require("express");
 const About = require("../models/About.model");
 

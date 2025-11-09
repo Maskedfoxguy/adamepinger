@@ -1,4 +1,3 @@
-// Hosts admin-only CRUD endpoints that require authentication and an admin role.
 const express = require("express");
 const { isValidObjectId } = require("mongoose");
 const Admin = require("../models/Admin.model");

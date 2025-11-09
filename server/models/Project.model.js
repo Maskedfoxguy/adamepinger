@@ -1,4 +1,3 @@
-// Describes portfolio projects including status, timelines, and related resources.
 const { Schema, model } = require("mongoose");
 
 const projectSchema = new Schema(

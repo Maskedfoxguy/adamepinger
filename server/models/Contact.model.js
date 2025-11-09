@@ -1,4 +1,3 @@
-// Stores contact form submissions including sender details and message content.
 const { Schema, model } = require("mongoose");
 
 const contactSchema = new Schema(

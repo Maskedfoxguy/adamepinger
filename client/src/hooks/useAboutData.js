@@ -1,4 +1,3 @@
-// Encapsulates loading and error handling for fetching the about information.
 import { useEffect, useState } from 'react';
 import { fetchAbout } from '../services/api';
 
@@ -8,7 +7,7 @@ export default function useAboutData() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    let ignore = false; // Prevents state updates if the component unmounts mid-request.
+    let ignore = false;
 
     async function loadAbout() {
       try {

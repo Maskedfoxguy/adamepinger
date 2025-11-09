@@ -1,4 +1,3 @@
-// Manual integration checks for route handlers using in-memory model doubles.
 process.env.NODE_ENV = "test";
 process.env.TOKEN_SECRET = "test-secret";
 

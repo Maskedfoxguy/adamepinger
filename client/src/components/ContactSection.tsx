@@ -1,15 +1,13 @@
 import React from 'react';
-
 import ContactForm from './ContactForm';
 
 const ContactSection: React.FC = () => {
   return (
-
-    <section id="contacts" className="py-20 px-4">
-      <div className="container mx-auto">
-        {/* We can place the existing contact form inside our new section. */}
-        <ContactForm />
-      </div>
+   
+    <section id="contacts" className="py-20">
+     
+      <h2 className="text-3xl font-bold mb-12 text-white text-center">Get In Touch</h2>
+      <ContactForm />
     </section>
   );
 };
