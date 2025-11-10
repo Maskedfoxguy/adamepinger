@@ -11,26 +11,29 @@ const LocationIcon = () => (
 const ContactForm: React.FC = () => {
   const [isEmailVisible, setIsEmailVisible] = useState(false);
 
-
   const revealEmail = () => {
     setIsEmailVisible(true);
   };
 
   return (
     <div className="contact-layout">
-      <div className="contact-info-left">
+      <div className="contact-text-left">
+        <h3 className="text-2xl font-bold mb-4">Let's Connect</h3>
+        <p className="text-gray-300">
+          I'm currently seeking new opportunities and would love to hear from you.
+          Whether you have a question or just want to say hi, feel free to reach out.
+        </p>
+      </div>
+
+      <div className="contact-info-middle">
         <div className="contact-item">
           <EmailIcon />
-          
-          
           <div className="text-white text-lg">
             {isEmailVisible ? (
-              
               <span>adam.epinger@email.com</span>
             ) : (
-             
               <button onClick={revealEmail} className="reveal-button">
-                Show Email
+                Reveal Email
               </button>
             )}
           </div>
@@ -40,6 +43,7 @@ const ContactForm: React.FC = () => {
           <span className="text-white text-lg">Heerhugowaard, NL</span>
         </div>
       </div>
+
       <div className="contact-image-right">
         <div className="image-placeholder">
           Image Placeholder
