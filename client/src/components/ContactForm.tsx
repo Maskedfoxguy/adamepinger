@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ProfPic from '../assets/images/ProfPic.jpg';
 import './ContactForm.css';
 
 const EmailIcon = () => (
@@ -20,8 +21,10 @@ const ContactForm: React.FC = () => {
       <div className="contact-text-left">
         <h3 className="text-2xl font-bold mb-4">Let's Connect</h3>
         <p className="text-gray-300">
-          I'm currently seeking new opportunities and would love to hear from you.
-          Whether you have a question or just want to say hi, feel free to reach out.
+          I’m happy in my current role. <br></br>
+          I take on projects for small businesses and freelancers.
+          If you have a question or want to talk, drop me a mail.<br></br>
+          I’d love to hear from you!
         </p>
       </div>
 
@@ -46,7 +49,11 @@ const ContactForm: React.FC = () => {
 
       <div className="contact-image-right">
         <div className="image-placeholder">
-          Image Placeholder
+          <img 
+            src={ProfPic} 
+            alt="Profile of Adam Epinger" 
+            className="w-full h-full object-cover object-[50%_59%] rounded-lg"
+          />
         </div>
       </div>
     </div>
