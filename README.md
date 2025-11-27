@@ -55,6 +55,6 @@ This project is currently **in progress**. I am actively developing it to learn 
 I'm open to connecting and collaborating. Feel free to reach out!
 
 *   **LinkedIn:** www.linkedin.com/in/adamepinger
-*   **Email:** adam.epinger@outlook.com
+
 
 
