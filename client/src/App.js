@@ -5,6 +5,7 @@ import {
   createBrowserRouter,
 } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import ProjectsPage from './pages/ProjectsPage';
@@ -21,6 +22,7 @@ function AppLayout() {
       <main>
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 }

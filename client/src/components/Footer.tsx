@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="site-footer">
+    <footer className="site-footer relative z-10">
       <div className="footer-content">
         <div className="footer-column-left" style={{ textAlign: 'center' }}>
           
