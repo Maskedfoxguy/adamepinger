@@ -11,6 +11,7 @@ import AboutPage from './pages/AboutPage';
 import ProjectsPage from './pages/ProjectsPage';
 import ContactsPage from './pages/ContactsPage';
 import AdminLoginPage from './pages/AdminLoginPage';
+import AdminDashboardPage from './pages/AdminDashboardPage';
 import './App.css';
 
 function AppLayout() {
@@ -47,6 +48,7 @@ const router = createBrowserRouter(
         { path: 'projects', element: <ProjectsPage /> },
         { path: 'contacts', element: <ContactsPage /> },
         { path: 'login', element: <AdminLoginPage /> },
+        { path: 'admin/dashboard', element: <AdminDashboardPage /> },
       ],
     },
   ],
