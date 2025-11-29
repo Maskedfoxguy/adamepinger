@@ -1,7 +1,7 @@
 import React from 'react';
 
-function AdminDashboardPage() {
 
+const AdminDashboardPage: React.FC = () => {
   return (
     <div className="p-8">
       <h1 className="text-4xl font-bold text-white">Admin Dashboard</h1>
@@ -11,6 +11,5 @@ function AdminDashboardPage() {
     </div>
   );
 }
-
 
 export default AdminDashboardPage;

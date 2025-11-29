@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginAdmin } from '../services/api';
 
-function AdminLoginPage() {
-  const [formData, setFormData] = useState({ email: '', password: '' });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState(null);
+const AdminLoginPage: React.FC = () => {
+  const [formData, setFormData] = useState<{ email: string; password: string }>({ email: '', password: '' });
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     setFormData((previous) => ({ ...previous, [name]: value }));
   }
 
-  async function handleSubmit(event) {
+  async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
     setIsSubmitting(true);
     setError(null);
@@ -22,8 +22,12 @@ function AdminLoginPage() {
       const { authToken } = await loginAdmin(formData);
       localStorage.setItem('adminToken', authToken);
       navigate('/admin/dashboard');
-    } catch (apiError) {
-      setError(apiError.message || 'Unable to log in.');
+    } catch (apiError: any) { 
+      if (apiError && apiError.message) {
+        setError(apiError.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -35,7 +39,6 @@ function AdminLoginPage() {
     <div className="min-h-screen flex items-center justify-center">
       <div className="bg-black bg-opacity-20 backdrop-blur-lg rounded-lg border border-white border-opacity-30 shadow-lg p-8 max-w-sm w-full">
         <h1 className="text-3xl font-bold text-center text-white mb-8">Admin Login</h1>
-        
         
         <form className="space-y-6">
           <div>
@@ -66,7 +69,6 @@ function AdminLoginPage() {
           </div>
         </form>
 
-    
         <div className="mt-6">
           <button
             type="button"
