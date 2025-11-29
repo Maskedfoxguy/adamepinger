@@ -7,9 +7,9 @@ import {
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
-import ProjectsPage from './pages/ProjectsPage';
-import ContactsPage from './pages/ContactsPage';
+import AboutPage from './pages/AboutPage.tsx';
+import ProjectsPage from './pages/ProjectsPage.tsx';
+import ContactsPage from './pages/ContactsPage.tsx';
 import AdminLoginPage from './pages/AdminLoginPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import './App.css';
