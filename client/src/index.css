@@ -14,3 +14,70 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+
+/*Scrollbar down here */
+
+
+html, body {
+  background-color: #0d1117; 
+
+  scrollbar-gutter: stable;
+}
+
+
+:root {
+  --scrollbar-fallback-width: 12px;
+}
+
+
+html.reserve-scrollbar .App {
+  padding-right: var(--scrollbar-fallback-width);
+}
+
+
+
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.0); 
+  border-radius: 8px;
+  transition: background-color 200ms ease, opacity 200ms ease;
+  opacity: 0;
+  pointer-events: none; 
+  border: none;
+}
+
+
+html.is-scrolling::-webkit-scrollbar-thumb,
+body.is-scrolling::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.60); 
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+html,
+body {
+  scrollbar-width: thin;                        
+  scrollbar-color: transparent transparent;     
+}
+
+
+html.is-scrolling,
+body.is-scrolling {
+  scrollbar-color: rgba(255, 255, 255, 0.60) transparent;
+}
