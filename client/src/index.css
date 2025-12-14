@@ -20,64 +20,53 @@ body {
 
 
 html, body {
-  background-color: #0d1117; 
-
-  scrollbar-gutter: stable;
+  
+  background: #0d1117; 
+  background-image: 
+    linear-gradient(to bottom, transparent 80%, rgb(10, 10, 15) 100%), 
+    linear-gradient(rgba(40, 44, 52, 0.7), rgba(40, 44, 52, 0.7)), 
+    url('./assets/images/backgroundimage1.jpg'); 
+  background-size: cover; 
+  background-position: center; 
+  background-attachment: fixed; 
 }
-
-
-:root {
-  --scrollbar-fallback-width: 12px;
-}
-
-
-html.reserve-scrollbar .App {
-  padding-right: var(--scrollbar-fallback-width);
-}
-
-
 
 
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px; 
+  z-index: 2;  
 }
-
 
 html::-webkit-scrollbar-track,
 body::-webkit-scrollbar-track {
-  background: transparent !important;
+  background-color: transparent !important; 
+  z-index: 1; 
 }
-
 
 html::-webkit-scrollbar-thumb,
 body::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.0); 
-  border-radius: 8px;
-  transition: background-color 200ms ease, opacity 200ms ease;
-  opacity: 0;
+  background: linear-gradient(to bottom, rgba(40, 40, 40, 0.5), rgba(40, 40, 40, 0.9)); 
+  border-radius: 10px; 
+  opacity: 0; 
   pointer-events: none; 
-  border: none;
+  transition: opacity 250ms ease-in-out; 
 }
-
 
 html.is-scrolling::-webkit-scrollbar-thumb,
 body.is-scrolling::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.60); 
-  opacity: 1;
-  pointer-events: auto;
+  opacity: 1; 
+  pointer-events: auto; 
 }
 
 
-html,
-body {
-  scrollbar-width: thin;                        
-  scrollbar-color: transparent transparent;     
+html, body {
+  scrollbar-width: thin; 
+  scrollbar-color: rgba(40, 40, 40, 0.7) transparent; 
 }
-
 
 html.is-scrolling,
 body.is-scrolling {
-  scrollbar-color: rgba(255, 255, 255, 0.60) transparent;
+  scrollbar-color: rgba(40, 40, 40, 0.9) transparent; 
 }
+
