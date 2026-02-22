@@ -12,6 +12,7 @@ import ProjectsPage from './pages/ProjectsPage.tsx';
 import ContactsPage from './pages/ContactsPage.tsx';
 import AdminLoginPage from './pages/AdminLoginPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
+import ProtectedRoute from './components/ProtectedRoute'; 
 import './App.css';
 
 function AppLayout() {
@@ -42,13 +43,20 @@ const router = createBrowserRouter(
     {
       path: '/',
       element: <AppLayout />,
-      children: [
+      children:  [
         { index: true, element: <HomePage /> },
         { path: 'about', element: <AboutPage /> },
         { path: 'projects', element: <ProjectsPage /> },
         { path: 'contacts', element: <ContactsPage /> },
         { path: 'login', element: <AdminLoginPage /> },
-        { path: 'admin/dashboard', element: <AdminDashboardPage /> },
+        
+        
+        {
+          element: <ProtectedRoute />, 
+          children: [
+            { path: 'admin/dashboard', element: <AdminDashboardPage /> },
+          ],
+        },
       ],
     },
   ],

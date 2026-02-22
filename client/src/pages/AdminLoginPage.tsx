@@ -22,7 +22,7 @@ const AdminLoginPage: React.FC = () => {
       const { authToken } = await loginAdmin(formData);
       localStorage.setItem('adminToken', authToken);
       navigate('/admin/dashboard');
-    } catch (apiError: any) { 
+    } catch (apiError: any) {
       if (apiError && apiError.message) {
         setError(apiError.message);
       } else {
