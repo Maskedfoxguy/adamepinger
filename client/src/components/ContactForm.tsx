@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ProfPic from '../assets/images/ProfPic.jpg';
+import ProfPic from '../assets/images/ProfilePhoto.png';
 import './ContactForm.css';
 
 const EmailIcon = () => (
@@ -52,7 +52,7 @@ const ContactForm: React.FC = () => {
           <img 
             src={ProfPic} 
             alt="Profile of Adam Epinger" 
-            className="w-full h-full object-cover object-[50%_59%] rounded-lg"
+            className="w-full h-full object-cover object-[58%_34%] rounded-lg"
           />
         </div>
       </div>
