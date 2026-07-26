@@ -25,15 +25,18 @@ const ProjectsSection: React.FC = () => {
       <div className="max-w-[1500px] mx-auto px-4 text-center">
         <h2 className="text-3xl font-bold mb-16 text-white">My Work</h2>
 
-    
-        <div className="flex justify-between items-center flex-wrap gap-8">
+        <div className="flex justify-center items-center flex-wrap gap-8">
           {projects.map((project) => (
-            <ProjectCard
-              key={project.title}
-              title={project.title}
-              screenshotUrl={project.screenshotUrl}
-              projectUrl={project.projectUrl}
-            />
+            <div 
+              key={project.title} 
+              className={project.title === 'Project Two' ? 'block' : 'hidden'}
+            >
+              <ProjectCard
+                title={project.title}
+                screenshotUrl={project.screenshotUrl}
+                projectUrl={project.projectUrl}
+              />
+            </div>
           ))}
         </div>
       </div>

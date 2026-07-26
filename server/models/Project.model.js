@@ -16,6 +16,10 @@ const projectSchema = new Schema(
       enum: ["ongoing", "completed"],
       required: [true, "Project status is required."],
     },
+    isFeatured: {
+      type: Boolean,
+      default: false, 
+    },
     technologies: [
       {
         type: String,
