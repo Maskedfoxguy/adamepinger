@@ -4,12 +4,14 @@ import ProjectsSection from '../components/ProjectsSection';
 import AboutSection from '../components/AboutSection';
 import ContactSection from '../components/ContactSection';
 
+const SHOW_PROJECTS_SECTION = false;
+
 
 const HomePage: React.FC = () => {
   return (
     <div>
       <HomeHero />
-      <ProjectsSection />
+      {SHOW_PROJECTS_SECTION && <ProjectsSection />}
       <AboutSection />
       <ContactSection />
       
