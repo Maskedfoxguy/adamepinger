@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import './Navbar.css';
-import logo from '../assets/images/AE-logo.png';
+import logo from '../assets/images/Glossy Crimson AE Fox Emblem.png';
 import magnifierIcon from '../assets/images/magnifier_geometric.png';
 import geoHamburger from '../assets/images/GeoHamburger.png';
 
