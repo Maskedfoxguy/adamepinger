@@ -16,9 +16,15 @@ const projectSchema = new Schema(
       enum: ["ongoing", "completed"],
       required: [true, "Project status is required."],
     },
+    featuredSlot: {
+      type: Number,
+      min: 1,
+      max: 3,
+      default: null,
+    },
     isFeatured: {
       type: Boolean,
-      default: false, 
+      default: false,
     },
     technologies: [
       {

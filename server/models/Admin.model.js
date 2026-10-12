@@ -6,10 +6,12 @@ const adminSchema = new Schema(
     firstName: {
       type: String,
       required: [true, "First name is required"],
+      trim: true,
     },
     lastName: {
       type: String,
       required: [true, "Last name is required"],
+      trim: true,
     },
     email: {
       type: String,
@@ -29,6 +31,49 @@ const adminSchema = new Schema(
       enum: ["admin"],
       default: "admin",
     },
+
+    profileImageUrl: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+
+    displayName: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+
+    passwordChangedAt: {
+      type: Date,
+    },
+
+    resetPasswordTokenHash: {
+      type: String,
+      default: null,
+    },
+
+    resetPasswordExpiresAt: {
+      type: Date,
+      default: null,
+    },
+
+    lastLoginAt: {
+      type: Date,
+      default: null,
+    },
+
+    lastLoginIp: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+
+    lastLoginUserAgent: {
+      type: String,
+      trim: true,
+      default: "",
+    },
   },
   { timestamps: true }
 );
@@ -36,6 +81,12 @@ const adminSchema = new Schema(
 adminSchema.pre("save", async function hashPassword(next) {
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 10);
+
+    if (!this.isNew) {
+      this.passwordChangedAt = new Date();
+      this.resetPasswordTokenHash = null;
+      this.resetPasswordExpiresAt = null;
+    }
   }
 
   next();

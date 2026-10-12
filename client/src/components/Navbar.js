@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import './Navbar.css';
-import logo from '../assets/images/Glossy Crimson AE Fox Emblem.png';
-import magnifierIcon from '../assets/images/magnifier_geometric.png';
-import geoHamburger from '../assets/images/GeoHamburger.png';
+import logo from '../assets/images/MFG Logo.png';
+import magnifierIcon from '../assets/images/Origami Metallic Magnifying Glass.png';
+import geoHamburger from '../assets/images/Metallic Origami Hamburger Menu Icon.png';
 
 function Navbar() {
   const [open, setOpen] = useState(false);
