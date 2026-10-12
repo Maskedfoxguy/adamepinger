@@ -1,3 +1,4 @@
+
 .admin-dashboard-page {
   position: relative;
   z-index: 2;
@@ -114,10 +115,40 @@
   border-radius: 20px;
 }
 
+/* RESTORED: Account and Projects dropdown animations */
+
 .admin-collapsible-content {
-  margin-top: 1.25rem;
   display: grid;
   gap: 1.5rem;
+  overflow: hidden;
+  transform-origin: top center;
+  will-change: max-height, opacity, transform, margin-top;
+}
+
+.admin-collapsible-content--open {
+  max-height: 2200px;
+  opacity: 1;
+  transform: translateY(0);
+  margin-top: 1.25rem;
+  pointer-events: auto;
+  transition:
+    max-height 680ms ease,
+    opacity 440ms ease,
+    transform 440ms ease,
+    margin-top 440ms ease;
+}
+
+.admin-collapsible-content--closed {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-32px);
+  margin-top: 0;
+  pointer-events: none;
+  transition:
+    max-height 700ms ease,
+    opacity 420ms ease,
+    transform 420ms ease,
+    margin-top 420ms ease;
 }
 
 .admin-panel-heading {
@@ -172,7 +203,11 @@
   height: 132px;
   border-radius: 999px;
   border: 1px solid rgba(165, 180, 252, 0.45);
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.22), rgba(15, 23, 42, 0.92));
+  background: linear-gradient(
+    135deg,
+    rgba(79, 70, 229, 0.22),
+    rgba(15, 23, 42, 0.92)
+  );
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -235,7 +270,10 @@
   color: #f8fafc;
   padding: 0.9rem 1rem;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
 .admin-field textarea {
@@ -270,7 +308,10 @@
   font-weight: 700;
   color: #ffffff;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .admin-upload-button {
@@ -350,7 +391,10 @@
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 16px 32px rgba(79, 70, 229, 0.28);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .admin-form-actions button:hover:not(:disabled) {
@@ -376,7 +420,10 @@
   color: #e2e8f0;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 .admin-secondary-button:hover:not(:disabled) {
@@ -389,6 +436,8 @@
   opacity: 0.65;
   cursor: not-allowed;
 }
+
+/* Responsive layout */
 
 @media (max-width: 900px) {
   .admin-dashboard-grid,

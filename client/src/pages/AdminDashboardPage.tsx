@@ -1,6 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AdminDashboardPage.css';
+import {
+  clearAdminSession,
+  getAdminToken,
+} from '../utils/adminSession';
 import { createAdminProject, fetchAdminAccount, updateAdminAccount } from '../services/api';
 
 type AccountFormData = {
@@ -199,10 +203,39 @@ const AdminDashboardPage: React.FC = () => {
     }));
   }
 
-  function handleLogout() {
-    localStorage.removeItem('adminToken');
-    navigate('/login');
+  
+
+async function handleLogout() {
+  const token = getAdminToken();
+
+  try {
+    if (token) {
+      // Revoke the session on the server.
+      const response = await fetch('/auth/logout', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        console.warn(
+          'Server logout could not be confirmed.'
+        );
+      }
+    }
+  } catch (error) {
+    console.warn('Server logout failed.', error);
+  } finally {
+    // Always clear the browser's session.
+    clearAdminSession();
+
+    // Return to the login page.
+    navigate('/login', { replace: true });
   }
+}
+
+
 
   async function handleAccountSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();

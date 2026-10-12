@@ -1,23 +1,46 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { NavLink, Link, useLocation } from 'react-router-dom';
+
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+
+import {
+  NavLink,
+  Link,
+  useLocation,
+} from 'react-router-dom';
+
 import './Navbar.css';
+
 import logo from '../assets/images/MFG Logo.png';
 import magnifierIcon from '../assets/images/Origami Metallic Magnifying Glass.png';
 import geoHamburger from '../assets/images/Metallic Origami Hamburger Menu Icon.png';
 
+// Central admin session manager
+import {
+  isAdminSessionValid,
+} from '../utils/adminSession';
+
 function Navbar() {
   const [open, setOpen] = useState(false);
+
+  // Check the session rather than localStorage.
   const [isAdminSession, setIsAdminSession] = useState(
-    () => Boolean(localStorage.getItem('adminToken'))
+    () => isAdminSessionValid()
   );
+
   const firstLinkRef = useRef(null);
   const location = useLocation();
 
+  // Navigation depends on the session state.
   const links = useMemo(
     () => [
       { to: '/about', label: 'About' },
       { to: '/projects', label: 'Projects' },
       { to: '/contacts', label: 'Contacts' },
+
       isAdminSession
         ? { to: '/admin/dashboard', label: 'Dashboard' }
         : { to: '/login', label: 'Login' },
@@ -25,16 +48,22 @@ function Navbar() {
     [isAdminSession]
   );
 
-  const toggle = () => setOpen((v) => !v);
+  const toggle = () => setOpen((previous) => !previous);
   const close = () => setOpen(false);
 
+  // Focus the first navigation link when menu opens.
   useEffect(() => {
-    if (open && firstLinkRef.current) firstLinkRef.current.focus();
+    if (open && firstLinkRef.current) {
+      firstLinkRef.current.focus();
+    }
   }, [open]);
 
+  // Close the navigation overlay using Escape.
   useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === 'Escape') close();
+    const onKey = (event) => {
+      if (event.key === 'Escape') {
+        close();
+      }
     };
 
     document.addEventListener('keydown', onKey);
@@ -46,19 +75,27 @@ function Navbar() {
     };
   }, [open]);
 
+  // Refresh session status whenever the page changes.
   useEffect(() => {
-    setIsAdminSession(Boolean(localStorage.getItem('adminToken')));
+    setIsAdminSession(isAdminSessionValid());
   }, [location.pathname]);
 
+  // Keep the navbar synchronized with session changes.
   useEffect(() => {
     const syncSessionState = () => {
-      setIsAdminSession(Boolean(localStorage.getItem('adminToken')));
+      setIsAdminSession(isAdminSessionValid());
     };
 
     window.addEventListener('storage', syncSessionState);
+    window.addEventListener('focus', syncSessionState);
+
+    // Check periodically for an expired session.
+    const interval = setInterval(syncSessionState, 10000);
 
     return () => {
       window.removeEventListener('storage', syncSessionState);
+      window.removeEventListener('focus', syncSessionState);
+      clearInterval(interval);
     };
   }, []);
 
@@ -73,13 +110,25 @@ function Navbar() {
             aria-controls="nav-overlay"
             aria-label="Open menu"
           >
-            <img src={geoHamburger} alt="Open menu" className="hamburger-img" />
+            <img
+              src={geoHamburger}
+              alt="Open menu"
+              className="hamburger-img"
+            />
           </button>
         </div>
 
         <div className="header-center">
-          <Link to="/" onClick={close} aria-label="Go to homepage">
-            <img src={logo} alt="AE Logo Home" className="logo-image" />
+          <Link
+            to="/"
+            onClick={close}
+            aria-label="Go to homepage"
+          >
+            <img
+              src={logo}
+              alt="AE Logo Home"
+              className="logo-image"
+            />
           </Link>
         </div>
 
@@ -95,8 +144,15 @@ function Navbar() {
             </Link>
           )}
 
-          <button className="icon-button search-button" aria-label="Open search">
-            <img src={magnifierIcon} alt="Search" className="search-img" />
+          <button
+            className="icon-button search-button"
+            aria-label="Open search"
+          >
+            <img
+              src={magnifierIcon}
+              alt="Search"
+              className="search-img"
+            />
           </button>
         </div>
       </header>
@@ -107,21 +163,27 @@ function Navbar() {
         role="dialog"
         aria-modal="true"
         aria-label="Site navigation"
-        onClick={(e) => {
-          if (e.target.classList.contains('nav-overlay')) close();
+        onClick={(event) => {
+          if (event.target.classList.contains('nav-overlay')) {
+            close();
+          }
         }}
       >
         <nav className="overlay-nav">
           <ul className="overlay-list">
-            {links.map((l, idx) => (
-              <li className="overlay-item" style={{ '--i': idx }} key={l.to}>
+            {links.map((link, index) => (
+              <li
+                className="overlay-item"
+                style={{ '--i': index }}
+                key={link.to}
+              >
                 <NavLink
-                  to={l.to}
+                  to={link.to}
                   onClick={close}
                   className="overlay-link"
-                  ref={idx === 0 ? firstLinkRef : undefined}
+                  ref={index === 0 ? firstLinkRef : undefined}
                 >
-                  {l.label}
+                  {link.label}
                 </NavLink>
               </li>
             ))}

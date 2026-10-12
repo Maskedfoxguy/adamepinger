@@ -1,6 +1,10 @@
+
 const { expressjwt } = require("express-jwt");
+const AdminSession = require("../models/AdminSession.model");
 
 const DEVELOPMENT_SECRET = "development-jwt-secret";
+const SESSION_TIMEOUT = 60 * 60 * 1000;
+
 let cachedSecret;
 
 function resolveTokenSecret() {
@@ -13,7 +17,7 @@ function resolveTokenSecret() {
 
   if (!tokenSecret && isProduction) {
     throw new Error(
-      "TOKEN_SECRET environment variable is required when running in production."
+      "TOKEN_SECRET is required in production."
     );
   }
 
@@ -26,7 +30,8 @@ function resolveTokenSecret() {
   return cachedSecret;
 }
 
-const isAuthenticated = expressjwt({
+// Step 1: Verify the JWT signature and expiration.
+const verifyJwt = expressjwt({
   secret: resolveTokenSecret(),
   algorithms: ["HS256"],
   requestProperty: "payload",
@@ -34,15 +39,75 @@ const isAuthenticated = expressjwt({
 });
 
 function getTokenFromHeaders(req) {
-  if (req.headers.authorization) {
-    const [scheme, token] = req.headers.authorization.split(" ");
+  const authorization = req.headers.authorization;
 
-    if (scheme === "Bearer" && token) {
-      return token;
-    }
+  if (!authorization) {
+    return null;
+  }
+
+  const [scheme, token] = authorization.split(" ");
+
+  if (scheme === "Bearer" && token) {
+    return token;
   }
 
   return null;
+}
+
+// Step 2: Check the session against MongoDB.
+async function checkAdminSession(req, res, next) {
+  try {
+    const { _id, sid, role } = req.payload || {};
+
+    if (!_id || !sid || role !== "admin") {
+      return res.status(401).json({
+        message: "Invalid admin session.",
+      });
+    }
+
+    const now = new Date();
+    const inactivityLimit = new Date(
+      now.getTime() - SESSION_TIMEOUT
+    );
+
+    // Only update sessions that are still valid.
+    const session = await AdminSession.findOneAndUpdate(
+      {
+        sessionId: sid,
+        adminId: _id,
+        revoked: false,
+        expiresAt: { $gt: now },
+        lastActivity: { $gt: inactivityLimit },
+      },
+      {
+        $set: { lastActivity: now },
+      },
+      {
+        new: true,
+      }
+    );
+
+    if (!session) {
+      return res.status(401).json({
+        message: "Your admin session has expired.",
+      });
+    }
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+}
+
+// First verify JWT, then validate the database session.
+function isAuthenticated(req, res, next) {
+  verifyJwt(req, res, (error) => {
+    if (error) {
+      return next(error);
+    }
+
+    checkAdminSession(req, res, next);
+  });
 }
 
 module.exports = {

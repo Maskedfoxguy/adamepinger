@@ -1,5 +1,15 @@
-const JSON_HEADERS = { 'Content-Type': 'application/json' };
 
+import {
+  getAdminToken,
+  isAdminSessionValid,
+  clearAdminSession,
+} from '../utils/adminSession';
+
+const JSON_HEADERS = {
+  'Content-Type': 'application/json',
+};
+
+// Central helper for API requests.
 async function request(path, options = {}) {
   const response = await fetch(path, options);
 
@@ -8,15 +18,30 @@ async function request(path, options = {}) {
 
     try {
       const body = await response.json();
+
       if (body && body.message) {
         message = body.message;
-      } else if (body && Array.isArray(body.errors) && body.errors.length > 0) {
-        message = body.errors.map((error) => error.message).join(' ');
+      } else if (
+        body &&
+        Array.isArray(body.errors) &&
+        body.errors.length > 0
+      ) {
+        message = body.errors
+          .map((error) => error.message)
+          .join(' ');
       }
-    } catch (error) {}
+    } catch (error) {
+      // Keep the default message if response parsing fails.
+    }
+
+    // Unauthorized admin request: remove session.
+    if (response.status === 401 && options.adminRequest) {
+      clearAdminSession();
+    }
 
     const apiError = new Error(message);
     apiError.status = response.status;
+
     throw apiError;
   }
 
@@ -27,14 +52,29 @@ async function request(path, options = {}) {
   return response.json();
 }
 
+// Prepare authentication headers for admin requests.
 function createAdminHeaders() {
-  const adminToken = localStorage.getItem('adminToken');
+  // Do not allow API requests with expired sessions.
+  if (!isAdminSessionValid()) {
+    clearAdminSession();
+
+    const error = new Error(
+      'Your admin session has expired. Please log in again.'
+    );
+
+    error.status = 401;
+    throw error;
+  }
+
+  const adminToken = getAdminToken();
 
   return {
     ...JSON_HEADERS,
     Authorization: 'Bearer ' + adminToken,
   };
 }
+
+// PUBLIC API
 
 export async function fetchAbout() {
   return request('/api/about');
@@ -44,6 +84,8 @@ export async function fetchProjects() {
   return request('/api/portfolio');
 }
 
+// ADMIN LOGIN
+
 export async function loginAdmin(credentials) {
   return request('/auth/login', {
     method: 'POST',
@@ -52,9 +94,12 @@ export async function loginAdmin(credentials) {
   });
 }
 
+// ADMIN ACCOUNT
+
 export async function fetchAdminAccount() {
   return request('/api/admin/account', {
     headers: createAdminHeaders(),
+    adminRequest: true,
   });
 }
 
@@ -63,13 +108,17 @@ export async function updateAdminAccount(accountData) {
     method: 'PUT',
     headers: createAdminHeaders(),
     body: JSON.stringify(accountData),
+    adminRequest: true,
   });
 }
+
+// ADMIN PROJECTS
 
 export async function createAdminProject(projectData) {
   return request('/api/admin/portfolio', {
     method: 'POST',
     headers: createAdminHeaders(),
     body: JSON.stringify(projectData),
+    adminRequest: true,
   });
 }
