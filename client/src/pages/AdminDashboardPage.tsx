@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AdminDashboardPage.css';
 import { createAdminProject, fetchAdminAccount, updateAdminAccount } from '../services/api';
@@ -45,6 +45,8 @@ const initialAccountFormData: AccountFormData = {
   profileImageUrl: '',
 };
 
+const MAX_PROFILE_IMAGE_SIZE = 2 * 1024 * 1024;
+
 function parseList(value: string) {
   return value
     .split(/\r?\n|,/)
@@ -54,6 +56,7 @@ function parseList(value: string) {
 
 const AdminDashboardPage: React.FC = () => {
   const navigate = useNavigate();
+  const profileImageInputRef = useRef<HTMLInputElement | null>(null);
 
   const [accountFormData, setAccountFormData] = useState<AccountFormData>(initialAccountFormData);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
@@ -125,6 +128,63 @@ const AdminDashboardPage: React.FC = () => {
       ...previous,
       [name]: value,
     }));
+  }
+
+  function clearProfileImage() {
+    setAccountFormData((previous) => ({
+      ...previous,
+      profileImageUrl: '',
+    }));
+    setAccountError(null);
+    setAccountSuccessMessage(null);
+  }
+
+  function handleProfileImageUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    setAccountError(null);
+    setAccountSuccessMessage(null);
+
+    if (!file.type.startsWith('image/')) {
+      setAccountError('Please choose an image file.');
+      event.target.value = '';
+      return;
+    }
+
+    if (file.size > MAX_PROFILE_IMAGE_SIZE) {
+      setAccountError('Please choose an image smaller than 2 MB.');
+      event.target.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (typeof reader.result !== 'string' || reader.result.length === 0) {
+        setAccountError('Unable to read that image. Please try another file.');
+        return;
+      }
+
+      setAccountFormData((previous) => ({
+        ...previous,
+        profileImageUrl: reader.result as string,
+      }));
+    };
+
+    reader.onerror = () => {
+      setAccountError('Unable to read that image. Please try another file.');
+    };
+
+    reader.readAsDataURL(file);
+    event.target.value = '';
+  }
+
+  function handleUploadPhotoClick() {
+    profileImageInputRef.current?.click();
   }
 
   function handleChange(
@@ -322,18 +382,43 @@ const AdminDashboardPage: React.FC = () => {
                   </div>
 
                   <div className="admin-field admin-field--full">
-                    <label htmlFor="profileImageUrl">Profile image URL</label>
+                    <label htmlFor="profileImageUpload">Profile picture</label>
+
                     <input
-                      id="profileImageUrl"
-                      name="profileImageUrl"
-                      type="url"
-                      value={accountFormData.profileImageUrl}
-                      onChange={handleAccountChange}
-                      placeholder="https://example.com/profile-photo.jpg"
+                      ref={profileImageInputRef}
+                      id="profileImageUpload"
+                      name="profileImageUpload"
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,image/avif"
+                      onChange={handleProfileImageUpload}
                       disabled={isLoadingAccount || isSavingAccount}
+                      className="admin-file-input-hidden"
                     />
+
+                    <div className="admin-photo-actions">
+                      <button
+                        type="button"
+                        className="admin-upload-button"
+                        onClick={handleUploadPhotoClick}
+                        disabled={isLoadingAccount || isSavingAccount}
+                      >
+                        Upload photo
+                      </button>
+
+                      {accountFormData.profileImageUrl && (
+                        <button
+                          type="button"
+                          className="admin-remove-button"
+                          onClick={clearProfileImage}
+                          disabled={isLoadingAccount || isSavingAccount}
+                        >
+                          Remove photo
+                        </button>
+                      )}
+                    </div>
+
                     <span className="admin-field-hint">
-                      Add the image URL you want to use for your profile picture.
+                      Upload an image from this computer. PNG, JPG, WEBP, GIF, SVG, or AVIF up to 2 MB.
                     </span>
                   </div>
                 </div>

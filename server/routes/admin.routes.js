@@ -10,6 +10,7 @@ const {
   isNonEmptyString,
   isStringArray,
   isValidUrl,
+  isValidImageSource,
   isValidEmail,
   isPlainObject,
   parseDate,
@@ -33,7 +34,7 @@ function createAdminHandlers(models = {}) {
   const sanitizeString = (value) =>
     typeof value === "string" ? value.trim() : value;
 
-    const sanitizeAdmin = (admin) => {
+  const sanitizeAdmin = (admin) => {
     if (!admin) {
       return admin;
     }
@@ -48,7 +49,7 @@ function createAdminHandlers(models = {}) {
     return safeAdmin;
   };
 
-    const validateAccountPayload = (payload) => {
+  const validateAccountPayload = (payload) => {
     const errors = [];
     const sanitized = {};
 
@@ -106,11 +107,11 @@ function createAdminHandlers(models = {}) {
         );
       } else {
         const profileImageUrl = sanitizeString(payload.profileImageUrl);
-        if (!isValidUrl(profileImageUrl)) {
+        if (!isValidImageSource(profileImageUrl)) {
           errors.push(
             buildValidationError(
               "profileImageUrl",
-              "Profile image URL must be valid."
+              "Profile image must be a valid URL or uploaded image."
             )
           );
         } else {
@@ -121,8 +122,7 @@ function createAdminHandlers(models = {}) {
 
     return { errors, sanitized };
   };
-  
-  
+
   const validateProjectPayload = (payload, options = {}) => {
     const { requireAllFields = false, existingProject } = options;
     const errors = [];
@@ -225,28 +225,6 @@ function createAdminHandlers(models = {}) {
       }
     }
 
-        if (Object.prototype.hasOwnProperty.call(payload, "featuredSlot")) {
-      const { featuredSlot } = payload;
-
-      if (featuredSlot === null || featuredSlot === "") {
-        sanitized.featuredSlot = null;
-        sanitized.isFeatured = false;
-      } else if (
-        Number.isInteger(featuredSlot) &&
-        [1, 2, 3].includes(featuredSlot)
-      ) {
-        sanitized.featuredSlot = featuredSlot;
-        sanitized.isFeatured = true;
-      } else {
-        errors.push(
-          buildValidationError(
-            "featuredSlot",
-            "Featured slot must be 1, 2, 3, or empty."
-          )
-        );
-      }
-    }
-    
     if (payload.projectUrl !== undefined) {
       const projectUrl = sanitizeString(payload.projectUrl);
       if (projectUrl && !isValidUrl(projectUrl)) {
@@ -567,7 +545,38 @@ function createAdminHandlers(models = {}) {
         return;
       }
 
-       res.status(200).json(sanitizeAdmin(admin));
+      res.status(200).json(sanitizeAdmin(admin));
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  const updateAccount = async (req, res, next) => {
+    try {
+      const adminId = req.payload._id;
+      const admin = await AdminModel.findById(adminId);
+
+      if (!admin) {
+        res.status(404).json({ message: "Admin not found." });
+        return;
+      }
+
+      const { errors, sanitized } = validateAccountPayload(req.body);
+
+      if (errors.length > 0) {
+        sendValidationErrors(res, errors);
+        return;
+      }
+
+      if (Object.keys(sanitized).length === 0) {
+        res.status(400).json({ message: "Provide at least one field to update." });
+        return;
+      }
+
+      admin.set(sanitized);
+      await admin.save();
+
+      res.status(200).json(sanitizeAdmin(admin.toObject()));
     } catch (error) {
       next(error);
     }
@@ -625,37 +634,6 @@ function createAdminHandlers(models = {}) {
       await project.save();
 
       res.status(200).json(project.toObject());
-    } catch (error) {
-      next(error);
-    }
-  };
-
-    const updateAccount = async (req, res, next) => {
-    try {
-      const adminId = req.payload._id;
-      const admin = await AdminModel.findById(adminId);
-
-      if (!admin) {
-        res.status(404).json({ message: "Admin not found." });
-        return;
-      }
-
-      const { errors, sanitized } = validateAccountPayload(req.body);
-
-      if (errors.length > 0) {
-        sendValidationErrors(res, errors);
-        return;
-      }
-
-      if (Object.keys(sanitized).length === 0) {
-        res.status(400).json({ message: "Provide at least one field to update." });
-        return;
-      }
-
-      admin.set(sanitized);
-      await admin.save();
-
-      res.status(200).json(sanitizeAdmin(admin.toObject()));
     } catch (error) {
       next(error);
     }

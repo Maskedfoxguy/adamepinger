@@ -21,6 +21,39 @@
   -webkit-backdrop-filter: blur(16px);
 }
 
+.admin-dashboard-hero {
+  padding: 2rem;
+  text-align: left;
+}
+
+.admin-dashboard-hero h1,
+.admin-panel-heading h2,
+.admin-panel--compact h2 {
+  margin: 0;
+}
+
+.admin-dashboard-hero h1 {
+  margin-top: 0.35rem;
+  font-size: clamp(2.2rem, 4vw, 3.6rem);
+  line-height: 1.1;
+}
+
+.admin-dashboard-hero p,
+.admin-panel-heading p,
+.admin-panel--compact p {
+  color: rgba(226, 232, 240, 0.88);
+  line-height: 1.7;
+}
+
+.admin-eyebrow,
+.admin-section-label {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.74rem;
+  color: #a5b4fc;
+}
+
 .admin-dashboard-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -29,15 +62,6 @@
 
 .admin-panel--compact {
   padding: 1.5rem;
-}
-
-.admin-panel--compact h2 {
-  margin: 0;
-}
-
-.admin-panel--compact p {
-  color: rgba(226, 232, 240, 0.88);
-  line-height: 1.7;
 }
 
 .admin-checklist {
@@ -49,15 +73,6 @@
 
 .admin-form-panel {
   padding: 1.75rem;
-}
-
-.admin-eyebrow,
-.admin-section-label {
-  display: inline-block;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 0.74rem;
-  color: #a5b4fc;
 }
 
 .admin-section-toggle {
@@ -100,37 +115,9 @@
 }
 
 .admin-collapsible-content {
+  margin-top: 1.25rem;
   display: grid;
   gap: 1.5rem;
-  overflow: hidden;
-  transform-origin: top center;
-  will-change: max-height, opacity, transform, margin-top;
-}
-
-.admin-collapsible-content--open {
-  max-height: 2200px;
-  opacity: 1;
-  transform: translateY(0);
-  margin-top: 1.25rem;
-  pointer-events: auto;
-  transition:
-    max-height 680ms ease,
-    opacity 440ms ease,
-    transform 440ms ease,
-    margin-top 440ms ease;
-}
-
-.admin-collapsible-content--closed {
-  max-height: 0;
-  opacity: 0;
-  transform: translateY(-32px);
-  margin-top: 0;
-  pointer-events: none;
-  transition:
-    max-height 700ms ease,
-    opacity 420ms ease,
-    transform 420ms ease,
-    margin-top 420ms ease;
 }
 
 .admin-panel-heading {
@@ -141,15 +128,9 @@
   margin-bottom: 1.5rem;
 }
 
-.admin-panel-heading h2 {
-  margin: 0;
-}
-
 .admin-panel-heading p {
   max-width: 420px;
   margin: 0;
-  color: rgba(226, 232, 240, 0.88);
-  line-height: 1.7;
 }
 
 .admin-project-form {
@@ -270,6 +251,55 @@
   background: rgba(15, 23, 42, 0.96);
 }
 
+.admin-file-input-hidden {
+  display: none;
+}
+
+.admin-photo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  align-items: center;
+}
+
+.admin-upload-button,
+.admin-remove-button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.85rem 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.admin-upload-button {
+  background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
+  box-shadow: 0 14px 28px rgba(29, 78, 216, 0.28);
+}
+
+.admin-upload-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 34px rgba(29, 78, 216, 0.34);
+}
+
+.admin-remove-button {
+  background: linear-gradient(135deg, #b91c1c, #7f1d1d);
+  box-shadow: 0 14px 28px rgba(185, 28, 28, 0.24);
+}
+
+.admin-remove-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 34px rgba(185, 28, 28, 0.3);
+}
+
+.admin-upload-button:disabled,
+.admin-remove-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .admin-field input:disabled {
   opacity: 0.55;
   cursor: not-allowed;
@@ -387,13 +417,9 @@
     padding-inline: 0.9rem;
   }
 
-  .admin-form-panel,
-  .admin-panel--compact {
+  .admin-dashboard-hero,
+  .admin-panel--compact,
+  .admin-form-panel {
     padding: 1.25rem;
-  }
-
-  .admin-form-actions button,
-  .admin-secondary-button {
-    width: 100%;
   }
 }
