@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
 import logo from '../assets/images/MFG Logo.png';
 import magnifierIcon from '../assets/images/Origami Metallic Magnifying Glass.png';
@@ -7,16 +7,25 @@ import geoHamburger from '../assets/images/Metallic Origami Hamburger Menu Icon.
 
 function Navbar() {
   const [open, setOpen] = useState(false);
+  const [isAdminSession, setIsAdminSession] = useState(
+    () => Boolean(localStorage.getItem('adminToken'))
+  );
   const firstLinkRef = useRef(null);
+  const location = useLocation();
 
-  const links = [
-    { to: '/about', label: 'About' },
-    { to: '/projects', label: 'Projects' },
-    { to: '/contacts', label: 'Contacts' },
-    { to: '/login', label: 'Login' },
-  ];
+  const links = useMemo(
+    () => [
+      { to: '/about', label: 'About' },
+      { to: '/projects', label: 'Projects' },
+      { to: '/contacts', label: 'Contacts' },
+      isAdminSession
+        ? { to: '/admin/dashboard', label: 'Dashboard' }
+        : { to: '/login', label: 'Login' },
+    ],
+    [isAdminSession]
+  );
 
-  const toggle = () => setOpen(v => !v);
+  const toggle = () => setOpen((v) => !v);
   const close = () => setOpen(false);
 
   useEffect(() => {
@@ -24,14 +33,34 @@ function Navbar() {
   }, [open]);
 
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') close(); };
+    const onKey = (e) => {
+      if (e.key === 'Escape') close();
+    };
+
     document.addEventListener('keydown', onKey);
     document.body.classList.toggle('nav-open', open);
+
     return () => {
       document.removeEventListener('keydown', onKey);
       document.body.classList.remove('nav-open');
     };
   }, [open]);
+
+  useEffect(() => {
+    setIsAdminSession(Boolean(localStorage.getItem('adminToken')));
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const syncSessionState = () => {
+      setIsAdminSession(Boolean(localStorage.getItem('adminToken')));
+    };
+
+    window.addEventListener('storage', syncSessionState);
+
+    return () => {
+      window.removeEventListener('storage', syncSessionState);
+    };
+  }, []);
 
   return (
     <>
@@ -55,6 +84,17 @@ function Navbar() {
         </div>
 
         <div className="header-right">
+          {isAdminSession && (
+            <Link
+              to="/admin/dashboard"
+              onClick={close}
+              className="session-indicator"
+              aria-label="Open admin dashboard"
+            >
+              Admin session
+            </Link>
+          )}
+
           <button className="icon-button search-button" aria-label="Open search">
             <img src={magnifierIcon} alt="Search" className="search-img" />
           </button>
