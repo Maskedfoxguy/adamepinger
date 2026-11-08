@@ -1,0 +1,48 @@
+.journey-page {
+  width: min(calc(100% - 2rem), 54rem);
+  margin-inline: auto;
+  padding-block: clamp(2rem, 6vw, 5rem);
+  color: #fff;
+}
+
+.journey-page h1 {
+  margin: 0 0 clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(2.25rem, 6vw, 3.75rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.journey-panel {
+  padding: clamp(1.25rem, 5vw, 3rem);
+  text-align: left;
+  background: rgba(30, 49, 66, 0.88);
+  border: 1px solid rgba(216, 232, 244, 0.4);
+  border-radius: 0.75rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.journey-panel section + section {
+  margin-top: 1.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(216, 232, 244, 0.28);
+}
+
+.journey-panel h2 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.25rem, 3vw, 1.65rem);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.journey-panel section:first-child h2 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+}
+
+.journey-panel p {
+  max-width: 65ch;
+  margin: 0;
+  color: #edf3f8;
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.65;
+}
