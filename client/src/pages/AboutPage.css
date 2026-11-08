@@ -1,8 +1,9 @@
 .journey-page {
-  width: min(calc(100% - 2rem), 54rem);
+  width: min(calc(100% - 2rem), 68rem);
   margin-inline: auto;
   padding-block: clamp(2rem, 6vw, 5rem);
   color: #fff;
+  text-align: center;
 }
 
 .journey-page h1 {
@@ -14,8 +15,7 @@
 
 .journey-panel {
   padding: clamp(1.25rem, 5vw, 3rem);
-  text-align: left;
-  background: rgba(30, 49, 66, 0.88);
+  background: rgba(173, 216, 230, 0.2);
   border: 1px solid rgba(216, 232, 244, 0.4);
   border-radius: 0.75rem;
   backdrop-filter: blur(10px);
@@ -40,7 +40,6 @@
 }
 
 .journey-panel p {
-  max-width: 65ch;
   margin: 0;
   color: #edf3f8;
   font-size: clamp(1rem, 2vw, 1.125rem);
