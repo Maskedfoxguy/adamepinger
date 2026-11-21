@@ -4,7 +4,7 @@
   "description": "A personal resume website showcasing my professional journey, portfolio, and projects (both completed and in progress). Features include a dynamic gallery, project updates, and an overview of my skills and experiences.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm --prefix client test -- --watchAll=false --runInBand && npm --prefix server test",
     "dev": "concurrently \"npm start --prefix server\" \"npm start --prefix client\""
   },
   "keywords": [],

@@ -1,11 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './AdminDashboardPage.css';
-import {
-  clearAdminSession,
-  getAdminToken,
-} from '../utils/adminSession';
-import { createAdminProject, fetchAdminAccount, updateAdminAccount } from '../services/api';
+import { createAdminProject, fetchAdminAccount, logoutAdmin, updateAdminAccount } from '../services/api';
 
 type AccountFormData = {
   firstName: string;
@@ -59,12 +54,14 @@ function parseList(value: string) {
 }
 
 const AdminDashboardPage: React.FC = () => {
-  const navigate = useNavigate();
   const profileImageInputRef = useRef<HTMLInputElement | null>(null);
 
   const [accountFormData, setAccountFormData] = useState<AccountFormData>(initialAccountFormData);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [isLoadingAccount, setIsLoadingAccount] = useState(true);
+  const [accountAttempt, setAccountAttempt] = useState(0);
+  const [accountLoadError, setAccountLoadError] = useState<string | null>(null);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isSavingAccount, setIsSavingAccount] = useState(false);
   const [accountError, setAccountError] = useState<string | null>(null);
   const [accountSuccessMessage, setAccountSuccessMessage] = useState<string | null>(null);
@@ -85,7 +82,7 @@ const AdminDashboardPage: React.FC = () => {
 
     async function loadAccount() {
       setIsLoadingAccount(true);
-      setAccountError(null);
+      setAccountLoadError(null);
 
       try {
         const account = await fetchAdminAccount();
@@ -107,9 +104,9 @@ const AdminDashboardPage: React.FC = () => {
         }
 
         if (apiError && apiError.message) {
-          setAccountError(apiError.message);
+          setAccountLoadError(apiError.message);
         } else {
-          setAccountError('Unable to load your account details right now.');
+          setAccountLoadError('Unable to load your account details right now.');
         }
       } finally {
         if (isMounted) {
@@ -123,7 +120,9 @@ const AdminDashboardPage: React.FC = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [accountAttempt]);
+
+  const accountUnavailable = isLoadingAccount || accountLoadError !== null;
 
   function handleAccountChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -203,39 +202,14 @@ const AdminDashboardPage: React.FC = () => {
     }));
   }
 
-  
-
-async function handleLogout() {
-  const token = getAdminToken();
-
-  try {
-    if (token) {
-      // Revoke the session on the server.
-      const response = await fetch('/auth/logout', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        console.warn(
-          'Server logout could not be confirmed.'
-        );
-      }
+  async function handleLogout() {
+    setIsLoggingOut(true);
+    try {
+      await logoutAdmin();
+    } catch (error) {
+      console.warn('Server logout could not be confirmed.', error);
     }
-  } catch (error) {
-    console.warn('Server logout failed.', error);
-  } finally {
-    // Always clear the browser's session.
-    clearAdminSession();
-
-    // Return to the login page.
-    navigate('/login', { replace: true });
   }
-}
-
-
 
   async function handleAccountSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -309,6 +283,17 @@ async function handleLogout() {
   return (
     <div className="admin-dashboard-page">
       <div className="admin-dashboard-shell">
+        {isLoadingAccount && <p role="status">Loading account details…</p>}
+        {accountLoadError && (
+          <section className="admin-panel">
+            <p role="alert">Unable to load account details. {accountLoadError}</p>
+            <button type="button" onClick={() => {
+              setAccountLoadError(null);
+              setIsLoadingAccount(true);
+              setAccountAttempt(previous => previous + 1);
+            }}>Retry account load</button>
+          </section>
+        )}
         <section className="admin-panel admin-form-panel">
           <button
             type="button"
@@ -371,7 +356,7 @@ async function handleLogout() {
                       value={accountFormData.firstName}
                       onChange={handleAccountChange}
                       required
-                      disabled={isLoadingAccount || isSavingAccount}
+                      disabled={accountUnavailable || isSavingAccount || isLoggingOut}
                     />
                   </div>
 
@@ -384,7 +369,7 @@ async function handleLogout() {
                       value={accountFormData.lastName}
                       onChange={handleAccountChange}
                       required
-                      disabled={isLoadingAccount || isSavingAccount}
+                      disabled={accountUnavailable || isSavingAccount || isLoggingOut}
                     />
                   </div>
 
@@ -397,7 +382,7 @@ async function handleLogout() {
                       value={accountFormData.displayName}
                       onChange={handleAccountChange}
                       placeholder="How you want your name to appear"
-                      disabled={isLoadingAccount || isSavingAccount}
+                      disabled={accountUnavailable || isSavingAccount || isLoggingOut}
                     />
                   </div>
 
@@ -410,7 +395,7 @@ async function handleLogout() {
                       value={accountFormData.email}
                       onChange={handleAccountChange}
                       required
-                      disabled={isLoadingAccount || isSavingAccount}
+                      disabled={accountUnavailable || isSavingAccount || isLoggingOut}
                     />
                   </div>
 
@@ -424,7 +409,7 @@ async function handleLogout() {
                       type="file"
                       accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,image/avif"
                       onChange={handleProfileImageUpload}
-                      disabled={isLoadingAccount || isSavingAccount}
+                      disabled={accountUnavailable || isSavingAccount || isLoggingOut}
                       className="admin-file-input-hidden"
                     />
 
@@ -433,7 +418,7 @@ async function handleLogout() {
                         type="button"
                         className="admin-upload-button"
                         onClick={handleUploadPhotoClick}
-                        disabled={isLoadingAccount || isSavingAccount}
+                        disabled={accountUnavailable || isSavingAccount || isLoggingOut}
                       >
                         Upload photo
                       </button>
@@ -443,7 +428,7 @@ async function handleLogout() {
                           type="button"
                           className="admin-remove-button"
                           onClick={clearProfileImage}
-                          disabled={isLoadingAccount || isSavingAccount}
+                          disabled={accountUnavailable || isSavingAccount || isLoggingOut}
                         >
                           Remove photo
                         </button>
@@ -468,7 +453,7 @@ async function handleLogout() {
                 )}
 
                 <div className="admin-form-actions admin-form-actions--split">
-                  <button type="submit" disabled={isLoadingAccount || isSavingAccount}>
+                  <button type="submit" disabled={accountUnavailable || isSavingAccount || isLoggingOut}>
                     {isLoadingAccount
                       ? 'Loading account...'
                       : isSavingAccount
@@ -480,9 +465,9 @@ async function handleLogout() {
                     type="button"
                     className="admin-secondary-button"
                     onClick={handleLogout}
-                    disabled={isSavingAccount}
+                    disabled={isSavingAccount || isLoggingOut}
                   >
-                    Log out
+                    {isLoggingOut ? 'Logging out…' : 'Log out'}
                   </button>
                 </div>
               </form>

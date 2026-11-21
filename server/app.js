@@ -26,6 +26,10 @@ app.use("/auth", authRoutes);
 
 const { isAuthenticated } = require("./middleware/jwt.middleware");
 const adminRoutes = require("./routes/admin.routes");
+app.use(["/api/admin/account", "/api/admin/profile"], (req, res, next) => {
+  res.set("Cache-Control", "no-store");
+  next();
+});
 app.use("/api/admin", isAuthenticated, adminRoutes);
 
 require("./error-handling")(app);

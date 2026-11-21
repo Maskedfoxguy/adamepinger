@@ -2,7 +2,7 @@
 import React from 'react';
 import './Footer.css';
 import githubLogo from '../assets/images/github-mark-white.png';
-import linkedinLogo from '../assets/images/linkedInlogo.png';
+import linkedinLogo from '../assets/images/linkedin-icon.webp';
 
 const Footer: React.FC = () => {
   const year = new Date().getFullYear();
@@ -19,6 +19,8 @@ const Footer: React.FC = () => {
             <a href="https://www.linkedin.com/in/adamepinger" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
               <img 
                 src={linkedinLogo} 
+                loading="lazy"
+                decoding="async"
                 alt="LinkedIn Profile" 
                 style={{ width: '32px', height: '32px' }} 
               />
@@ -28,6 +30,8 @@ const Footer: React.FC = () => {
             <a href="https://github.com/Maskedfoxguy" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
               <img 
                 src={githubLogo} 
+                loading="lazy"
+                decoding="async"
                 alt="GitHub Profile" 
                 style={{ width: '32px', height: '32px' }} 
               />

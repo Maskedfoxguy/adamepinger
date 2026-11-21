@@ -1,22 +1,27 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import HomeHero from './HomeHero';
 
 import ContactForm from './ContactForm';
 import Footer from './Footer';
 
 describe('HomeFlow Components', () => {
-  test('HomeHero renders without crashing', () => {
+  test('HomeHero shows the current homepage heading and introduction', () => {
     render(<HomeHero />);
-    expect(screen.getByText(/Welcome to My Portfolio/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Ádám Epinger' })).toBeVisible();
+    expect(screen.getByText(/Web Developer\./i)).toBeVisible();
   });
 
-  
-
-  test('ContactForm renders without crashing', () => {
+  test('reveals the email address when requested', async () => {
+    const user = userEvent.setup();
     render(<ContactForm />);
-    expect(screen.getByText(/Get In Touch/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Name/i)).toBeInTheDocument();
+    const email = 'adam.epinger@email.com';
+    expect(screen.queryByText(email)).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Reveal Email' }));
+
+    expect(screen.getByText(email)).toBeVisible();
   });
 
   test('Footer renders without crashing', () => {

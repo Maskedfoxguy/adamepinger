@@ -15,6 +15,10 @@ const {
 const tokenSecret = resolveTokenSecret();
 
 const router = express.Router();
+router.use((req, res, next) => {
+  res.set("Cache-Control", "no-store");
+  next();
+});
 
 // Maximum total session lifetime: 6 hours.
 const MAX_SESSION_AGE = 6 * 60 * 60 * 1000;
