@@ -1,21 +1,51 @@
+import React, { useEffect, useState } from 'react';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { verifyAdminSession } from '../services/api';
+import { isAdminSessionValid, useAdminToken } from '../utils/adminSession';
+import '../pages/AdminDashboardPage.css';
 
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+function VerifyProtectedEntry() {
+  const [attempt, setAttempt] = useState(0);
+  const [result, setResult] = useState<'checking' | 'verified' | 'retry'>('checking');
 
-// Check the actual session validity, not just token existence.
-import { isAdminSessionValid } from '../utils/adminSession';
+  useEffect(() => {
+    let active = true;
+    verifyAdminSession().then(
+      () => { if (active) setResult('verified'); },
+      () => { if (active) setResult('retry'); },
+    );
+    return () => { active = false; };
+  }, [attempt]);
 
-const ProtectedRoute = () => {
-  const isAuthenticated = isAdminSessionValid();
+  if (result === 'verified') {
+    return <Outlet />;
+  }
 
-  // If the session is missing or expired,
-  // redirect the admin to the login page.
-  if (!isAuthenticated) {
+  return (
+    <section className="admin-dashboard-page">
+      <div className="admin-dashboard-shell admin-panel">
+        {result === 'checking' ? (
+          <p role="status">Checking your admin session…</p>
+        ) : (
+          <>
+            <p role="alert">Unable to verify your admin session. Please try again.</p>
+            <button type="button" onClick={() => {
+              setResult('checking');
+              setAttempt(previous => previous + 1);
+            }}>Retry session check</button>
+          </>
+        )}
+      </div>
+    </section>
+  );
+}
+
+export default function ProtectedRoute() {
+  const token = useAdminToken();
+  const location = useLocation();
+  if (!token || !isAdminSessionValid()) {
     return <Navigate to="/login" replace />;
   }
 
-  // Otherwise allow access to the admin dashboard.
-  return <Outlet />;
-};
-
-export default ProtectedRoute;
+  return <VerifyProtectedEntry key={`${location.key}:${token}`} />;
+}

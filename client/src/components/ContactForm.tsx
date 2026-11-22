@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import ProfPic from '../assets/images/ProfilePhoto.png';
+import portrait320 from '../assets/images/portrait-320.webp';
+import portrait640 from '../assets/images/portrait-640.webp';
 import './ContactForm.css';
 
 const EmailIcon = () => (
@@ -50,7 +51,11 @@ const ContactForm: React.FC = () => {
       <div className="contact-image-right">
         <div className="image-placeholder">
           <img 
-            src={ProfPic} 
+            src={portrait320}
+            srcSet={`${portrait320} 320w, ${portrait640} 640w`}
+            sizes="300px"
+            loading="lazy"
+            decoding="async"
             alt="Profile of Adam Epinger" 
             className="w-full h-full object-cover object-[58%_34%] rounded-lg"
           />

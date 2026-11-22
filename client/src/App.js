@@ -5,8 +5,6 @@ import {
   RouterProvider,
   Outlet,
   createBrowserRouter,
-  useLocation,
-  useNavigate,
 } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
@@ -21,54 +19,21 @@ import AdminLoginPage from './pages/AdminLoginPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
-// NEW: Central admin session management
 import {
-  getAdminToken,
-  isAdminSessionValid,
-  clearAdminSession,
   startAdminSessionMonitor,
+  useAdminToken,
 } from './utils/adminSession';
 
 import './App.css';
 
 function AppLayout() {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const token = useAdminToken();
 
   useEffect(() => {
-    // Don't start a monitor if nobody is logged in.
-    if (!getAdminToken()) {
-      return;
+    if (token) {
+      return startAdminSessionMonitor(token);
     }
-
-    // Remove expired sessions immediately.
-    if (!isAdminSessionValid()) {
-      clearAdminSession();
-
-      if (location.pathname.startsWith('/admin')) {
-        navigate('/login', { replace: true });
-      }
-
-      return;
-    }
-
-    // Start tracking website activity.
-    const stopMonitoring = startAdminSessionMonitor(() => {
-      // Clear expired session information.
-      clearAdminSession();
-
-      // Redirect when inside the admin area.
-      if (window.location.pathname.startsWith('/admin')) {
-        navigate('/login', { replace: true });
-      }
-    });
-
-    // Stop old listeners when the layout changes
-    // or the component is unmounted.
-    return () => {
-      stopMonitoring();
-    };
-  }, [location.pathname, navigate]);
+  }, [token]);
 
   return (
     <div className="App">

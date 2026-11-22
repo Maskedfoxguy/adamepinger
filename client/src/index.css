@@ -13,6 +13,7 @@ body {
 
 html,
 body {
+  --page-background: url('./assets/images/background-desktop.webp');
   min-height: 100%;
   background: #0d1117;
   background-image:
@@ -25,12 +26,19 @@ body {
       rgba(40, 44, 52, 0.7),
       rgba(40, 44, 52, 0.7)
     ),
-    url('./assets/images/backgroundimage1.jpg');
+    var(--page-background);
   background-size: cover;
   background-position: center bottom;
   background-attachment: fixed;
   scrollbar-width: thin;
   scrollbar-color: rgba(68, 78, 96, 0.95) rgba(13, 17, 23, 0.45);
+}
+
+@media (max-width: 600px) {
+  html,
+  body {
+    --page-background: url('./assets/images/background-mobile.webp');
+  }
 }
 
 html::-webkit-scrollbar,

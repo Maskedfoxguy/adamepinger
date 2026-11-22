@@ -1,4 +1,6 @@
 
+import { useSyncExternalStore } from 'react';
+
 /*
  * Central Admin Session Manager
  *
@@ -13,6 +15,8 @@ const HEARTBEAT_INTERVAL = 5 * 60 * 1000;
 
 const TOKEN_KEY = 'adminToken';
 const LAST_ACTIVITY_KEY = 'adminLastActivity';
+const SESSION_CHANGE = 'admin-session-change';
+export const ADMIN_REQUEST_TIMEOUT_MS = 8000;
 
 // Save a newly authenticated session.
 export function saveAdminSession(token) {
@@ -21,6 +25,7 @@ export function saveAdminSession(token) {
     LAST_ACTIVITY_KEY,
     Date.now().toString()
   );
+  window.dispatchEvent(new Event(SESSION_CHANGE));
 }
 
 // Retrieve the stored token.
@@ -29,19 +34,47 @@ export function getAdminToken() {
 }
 
 // Delete local session information.
-export function clearAdminSession() {
+export function clearAdminSession(token = getAdminToken()) {
+  if (!token || token !== getAdminToken()) {
+    return;
+  }
   sessionStorage.removeItem(TOKEN_KEY);
   sessionStorage.removeItem(LAST_ACTIVITY_KEY);
+  window.dispatchEvent(new Event(SESSION_CHANGE));
 }
 
-// Check the local inactivity timeout.
+function subscribeToAdminSession(listener) {
+  window.addEventListener(SESSION_CHANGE, listener);
+  window.addEventListener('storage', listener);
+  return () => {
+    window.removeEventListener(SESSION_CHANGE, listener);
+    window.removeEventListener('storage', listener);
+  };
+}
+
+export function useAdminToken() {
+  return useSyncExternalStore(subscribeToAdminSession, getAdminToken);
+}
+
+// The server verifies the token. Its expiry claim is only a local timer.
+function hasTokenExpired(token) {
+  try {
+    const payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    const { exp } = JSON.parse(window.atob(payload));
+    return typeof exp === 'number' && Date.now() >= exp * 1000;
+  } catch {
+    return false;
+  }
+}
+
+// Check local expiry without mutating storage during render.
 export function isAdminSessionValid() {
   const token = getAdminToken();
   const lastActivity = Number(
     sessionStorage.getItem(LAST_ACTIVITY_KEY)
   );
 
-  if (!token || !lastActivity) {
+  if (!token || !lastActivity || hasTokenExpired(token)) {
     return false;
   }
 
@@ -51,7 +84,6 @@ export function isAdminSessionValid() {
     inactiveTime >= SESSION_TIMEOUT ||
     inactiveTime < 0
   ) {
-    clearAdminSession();
     return false;
   }
 
@@ -59,7 +91,7 @@ export function isAdminSessionValid() {
 }
 
 // Record meaningful website activity.
-export function updateAdminActivity() {
+function updateAdminActivity() {
   if (!isAdminSessionValid()) {
     return;
   }
@@ -71,10 +103,10 @@ export function updateAdminActivity() {
 }
 
 // Monitor the admin session across the website.
-export function startAdminSessionMonitor(onExpire) {
+export function startAdminSessionMonitor(token) {
   let lastRecorded = 0;
   let lastHeartbeat = 0;
-  let heartbeatInProgress = false;
+  let heartbeatController = null;
   let stopped = false;
   let expired = false;
 
@@ -84,8 +116,7 @@ export function startAdminSessionMonitor(onExpire) {
     }
 
     expired = true;
-    clearAdminSession();
-    onExpire();
+    clearAdminSession(token);
   }
 
   // Ask Express whether the session is still valid.
@@ -93,7 +124,7 @@ export function startAdminSessionMonitor(onExpire) {
     if (
       stopped ||
       expired ||
-      heartbeatInProgress
+      heartbeatController
     ) {
       return;
     }
@@ -103,18 +134,18 @@ export function startAdminSessionMonitor(onExpire) {
       return;
     }
 
-    const token = getAdminToken();
-
-    if (!token) {
-      expireSession();
+    if (getAdminToken() !== token) {
       return;
     }
 
-    heartbeatInProgress = true;
+    heartbeatController = new AbortController();
+    const timeout = setTimeout(() => heartbeatController?.abort(), ADMIN_REQUEST_TIMEOUT_MS);
 
     try {
       const response = await fetch('/auth/heartbeat', {
         method: 'POST',
+        cache: 'no-store',
+        signal: heartbeatController.signal,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -139,12 +170,12 @@ export function startAdminSessionMonitor(onExpire) {
     } catch (error) {
       // A temporary network failure is not necessarily
       // an expired session.
-      console.warn(
-        'Admin session heartbeat failed.',
-        error
-      );
+      if (!stopped) {
+        console.warn('Admin session heartbeat failed.', error);
+      }
     } finally {
-      heartbeatInProgress = false;
+      clearTimeout(timeout);
+      heartbeatController = null;
     }
   }
 
@@ -226,6 +257,7 @@ export function startAdminSessionMonitor(onExpire) {
   // Remove listeners when the component unmounts.
   return () => {
     stopped = true;
+    heartbeatController?.abort();
 
     events.forEach((eventName) => {
       window.removeEventListener(

@@ -9,30 +9,26 @@ import React, {
 import {
   NavLink,
   Link,
-  useLocation,
 } from 'react-router-dom';
 
 import './Navbar.css';
 
-import logo from '../assets/images/MFG Logo.png';
-import magnifierIcon from '../assets/images/Origami Metallic Magnifying Glass.png';
-import geoHamburger from '../assets/images/Metallic Origami Hamburger Menu Icon.png';
+import logo from '../assets/images/mfg-logo.webp';
+import magnifierIcon from '../assets/images/search-icon.webp';
+import geoHamburger from '../assets/images/menu-icon.webp';
 
-// Central admin session manager
 import {
   isAdminSessionValid,
+  useAdminToken,
 } from '../utils/adminSession';
 
 function Navbar() {
   const [open, setOpen] = useState(false);
 
-  // Check the session rather than localStorage.
-  const [isAdminSession, setIsAdminSession] = useState(
-    () => isAdminSessionValid()
-  );
+  const token = useAdminToken();
+  const isAdminSession = Boolean(token) && isAdminSessionValid();
 
   const firstLinkRef = useRef(null);
-  const location = useLocation();
 
   // Navigation depends on the session state.
   const links = useMemo(
@@ -75,30 +71,6 @@ function Navbar() {
     };
   }, [open]);
 
-  // Refresh session status whenever the page changes.
-  useEffect(() => {
-    setIsAdminSession(isAdminSessionValid());
-  }, [location.pathname]);
-
-  // Keep the navbar synchronized with session changes.
-  useEffect(() => {
-    const syncSessionState = () => {
-      setIsAdminSession(isAdminSessionValid());
-    };
-
-    window.addEventListener('storage', syncSessionState);
-    window.addEventListener('focus', syncSessionState);
-
-    // Check periodically for an expired session.
-    const interval = setInterval(syncSessionState, 10000);
-
-    return () => {
-      window.removeEventListener('storage', syncSessionState);
-      window.removeEventListener('focus', syncSessionState);
-      clearInterval(interval);
-    };
-  }, []);
-
   return (
     <>
       <header className="app-header">
@@ -112,6 +84,8 @@ function Navbar() {
           >
             <img
               src={geoHamburger}
+              width={180}
+              height={180}
               alt="Open menu"
               className="hamburger-img"
             />
@@ -126,6 +100,8 @@ function Navbar() {
           >
             <img
               src={logo}
+              width={195}
+              height={182}
               alt="AE Logo Home"
               className="logo-image"
             />
@@ -150,6 +126,8 @@ function Navbar() {
           >
             <img
               src={magnifierIcon}
+              width={150}
+              height={150}
               alt="Search"
               className="search-img"
             />
